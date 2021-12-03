@@ -295,7 +295,93 @@ public class Main {
             }
         }
     }
+    public static void changeUsername(String newName){
+        //si da tiempo comprobar que va bien
+        userManager.updateUsername(patientName,newName);
+        patientManager.updateUsername(patientName, newName);
+    }
     
+    public static void changePassword(String password){
+        userManager.updatePassword(patientName,password);
+    }
+    public static String completeForm(String response_form) throws Exception {
+        String responseServer="";
+        String q1,q2,q3,q4,q5,q6,q7,q8,q9,q10,q11,q12,q13,q14,q15,q16,q17,q18,q19,q20;
+        String totalText[]= response_form.split(",");
+        q1=totalText[0];
+        q2=totalText[1];
+        q3=totalText[2];
+        q4=totalText[3];
+        q5=totalText[4];
+        q6=totalText[5];
+        q7=totalText[6];
+        q8=totalText[7];
+        q9=totalText[8];
+        q10=totalText[9];
+        q11=totalText[10];
+        q12=totalText[11];
+        q13=totalText[12];
+        q14=totalText[13];
+        q15=totalText[14];
+        q16=totalText[15];
+        q17=totalText[16];
+        q18=totalText[17];
+        q19=totalText[18];
+        q20=totalText[19];
+       
+        Integer patient_id = patientManager.searchByUsername(patientName);
+        Patient patient = patientManager.getPatient(patient_id);
+       
+        String nameForm = patientName+("_form.txt");
+        File file = new File(nameForm);
+        PrintWriter printWriter = null;
+        try {
+            printWriter = new PrintWriter(file);
+            printWriter.print("1. Do you have difficulty or pain when opening your mouth, for example, when yawning? -> " + q1);
+            printWriter.print("\n2. Do you feel your jaw “sticking”, “locking” or “popping out”? -> " + q2);
+            printWriter.print("\n3. Do you have difficulty or pain when you chew, speak, or use your jaws? -> " + q3);
+            printWriter.print("\n4. Have you noticed noises in your jaw joints? -> " + q4);
+            printWriter.print("\n5. Do your jaws regularly feel stiff or clenched? -> " + q5);
+            printWriter.print("\n6. Do you have pain around your ears, temples, or cheeks? -> " + q6);
+            printWriter.print("\n7. Do you have frequent headaches or neck pain? -> " + q7);
+            printWriter.print("\n8. Have you had a recent injury or trauma to your head, neck, or jaw? -> " + q8);
+            printWriter.print("\n9. Have you noticed or felt any recent change in your bite? -> " + q9);
+            printWriter.print("\n10. Have you ever been treated for a jaw joint problem? -> " + q10);
+            printWriter.print("\n11. Have you noticed that you grind or clench your teeth frequently during sleep? -> " + q11);
+            printWriter.print("\n12. Has anyone heard you grind your teeth at night? -> " + q12);
+            printWriter.print("\n13. Did your jaw feel sore or fatigued when you woke up in the morning? -> " + q13);
+            printWriter.print("\n14. Do you ever have a momentary headache when you wake up in the morning? -> " + q14);
+            printWriter.print("\n15. Have you noticed that you grind/clench your teeth during the day? -> " + q15);
+            printWriter.print("\n16. Do you have difficulty opening your mouth wide when you wake up? -> " + q16);
+            printWriter.print("\n17. Do you feel pain in your teeth when they come in contact with cold air or liquids? -> " + q17);
+            printWriter.print("\n18. Do you feel your jaw joint lock or make a clicking sound when you move it? -> " + q18);
+            printWriter.print("\n19. Do your teeth or gums feel sore when you wake up in the morning? -> " + q19);
+            printWriter.print("\n20. Have you noticed that you have considerable wear on your teeth? -> " + q20);
+
+        } catch (IOException ex) {
+            responseServer= "There was an error while saving";
+
+        } finally {
+            if (printWriter != null) {
+                printWriter.close();
+            }
+
+        }
+        String filePath = nameForm;
+        byte[] patient_form = Files.readAllBytes(Paths.get(filePath));
+        System.out.println(patient_form);
+        patient.setPatient_form(patient_form);
+        patientManager.addForm(patient);
+        responseServer="Form saved successfully";
+        return responseServer;
+
+
+    }
+      private static void searchECGByName() throws Exception{
+        Integer patient_id = patientManager.searchByUsername(patientName);
+        List<Ecg> ecgList = ecgManager.getECGpatient(patient_id);
+        searchECGByName_patient(ecgList);
+    }
     
     private static void deletePatient() throws Exception {
         searchPatientByName();   

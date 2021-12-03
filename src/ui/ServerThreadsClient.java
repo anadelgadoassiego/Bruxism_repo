@@ -94,7 +94,7 @@ public class ServerThreadsClient implements Runnable {
 
     }
 
-    private static void menuPatient(){
+    private static void menuPatient() throws IOException{
         inputStream = null;
         outputStream = null;
         try {
@@ -106,18 +106,24 @@ public class ServerThreadsClient implements Runnable {
             System.out.println(choice);
             switch (choice) {
                 case 1:
-                   String response = din.readUTF();
+                   String response_form = din.readUTF();
+                   String okay="";
 
                     try {
-                        ui.Main.newUserPatient(response);
+                        okay= ui.Main.completeForm(response_form);
                     } catch (Exception ex) {
                         Logger.getLogger(ServerThreadsClient.class.getName()).log(Level.SEVERE, null, ex);
                     }
+                    if ((okay == "There was an error while saving") || (okay == "")) {
 
+                    } // We check the role
+                    else if (okay == "Form saved successfully" ) {
+                       don.writeUTF(okay);
+                    }
                     break;
                 case 2:
                     String response_login = din.readUTF();
-                    String okay = null;
+                    okay = "";
                     try {
                         okay = ui.Main.login(response_login);
                     } catch (Exception ex) {
@@ -133,9 +139,27 @@ public class ServerThreadsClient implements Runnable {
 
                     }
                     break;
-                case 0:
-                    dbManager.disconnect();
-                    userManager.disconnect();
+                case 3:
+                    break;
+                case 4:
+                    break;
+                case 5:
+                    break;
+                case 6:
+                    String newName = din.readUTF();
+                    /*try {
+                        okay = ui.Main.changeUsername(newName);
+                    } catch (Exception ex) {
+                        Logger.getLogger(ServerThreadsClient.class.getName()).log(Level.SEVERE, null, ex);
+                    }*/
+                case 7:
+                    String newPassword = din.readUTF();
+                    /*try {
+                        okay = ui.Main.changePassword(newPassword);
+                    } catch (Exception ex) {
+                        Logger.getLogger(ServerThreadsClient.class.getName()).log(Level.SEVERE, null, ex);
+                    }*/
+                case 8:
                     return;
                 default:
                     break;

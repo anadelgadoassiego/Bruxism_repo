@@ -25,9 +25,9 @@ public interface UserManager {
 
     public User checkPassword(String username, String password);
 
-    public String updateUsername(String username);
+    public void updateUsername(String username, String newName);
 
-    public void updatePassword(String username);
+    public void updatePassword(String username, String newPassword);
     
     public void deletePatient(String username);
 

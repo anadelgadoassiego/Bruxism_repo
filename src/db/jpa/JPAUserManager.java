@@ -94,45 +94,28 @@ public class JPAUserManager implements UserManager {
     }
 
     @Override
-    public String updateUsername(String username) {
-        System.out.println(username);
+    public void updateUsername(String username, String newName) {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         Query q1 = em.createNativeQuery("SELECT * FROM users WHERE username = ?", User.class);
         q1.setParameter(1, username);
         User user = (User) q1.getSingleResult();
-        System.out.println(user);
-        System.out.print("Type your new username:");
-        String newName = "";
-        try {
-                newName = reader.readLine();
-        } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-        }
+        
         // Begin transaction
         em.getTransaction().begin();
         // Make changes
         user.setName_user(newName);
         // End transaction
         em.getTransaction().commit();
-        return newName;
    
     }
 
     @Override
-    public void updatePassword(String username) {
+    public void updatePassword(String username, String newPassword) {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         Query q2 = em.createNativeQuery("SELECT * FROM users WHERE username = ?", User.class);
         q2.setParameter(1, username);
         User user = (User) q2.getSingleResult();
-        System.out.print("Type your new password:");
-        String newPassword = "";
-        try {
-                newPassword = reader.readLine();
-        } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-        }
+       
         MessageDigest md = null;
         try {
                 md = MessageDigest.getInstance("MD5");
