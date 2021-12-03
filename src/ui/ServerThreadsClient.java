@@ -6,8 +6,10 @@
 package ui;
 
 import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -31,9 +33,13 @@ public class ServerThreadsClient implements Runnable {
         
         InputStream inputStream = null;
         DataInputStream din;
+        OutputStream outputStream = null;
+        DataOutputStream don;
         try {
             inputStream = socket.getInputStream();
             din= new DataInputStream(inputStream);
+            outputStream = socket.getOutputStream();
+            don = new DataOutputStream(outputStream);
             int choice= din.readInt();
             System.out.println(choice);
         switch (choice) {
@@ -48,7 +54,23 @@ public class ServerThreadsClient implements Runnable {
             
                     break;
                 case 2:
-                    login();
+                    String response_login = din.readUTF();
+                    String okay = null;
+                    try {
+                        okay = ui.Main.login(response_login);
+                    } catch (Exception ex) {
+                        Logger.getLogger(ServerThreadsClient.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    if (okay == "Wrong credentials, please try again!") {
+                        
+                    } // We check the role
+                    else if (okay == "Welcome patient !" ) {
+                       don.writeUTF(okay);
+                       //menuPatient();
+                       
+                    }  else {
+                        System.out.println("Invalid role");
+                    }
                     break;
                 case 0:
                     dbManager.disconnect();

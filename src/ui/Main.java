@@ -211,24 +211,30 @@ public class Main {
 
         }
 
-    private static void login() throws Exception {
-        System.out.println("Please input your credentials");
-        System.out.print("Username: ");
-        String username = reader.readLine();
-        System.out.print("Password: ");
-        String password = reader.readLine();
+    public static String login(String response_login) throws Exception {
+        String username, password, okay = null;
+        String totalText[]= response_login.split(",");
+        username = totalText[0];
+        password = totalText[1];
+        
         User user = userManager.checkPassword(username, password);
         // We check if the user/password combination was OK
         if (user == null) {
-            System.out.println("Wrong credentials, please try again!");
+            okay = "Wrong credentials, please try again!";
         } // We check the role
         else if (user.getRole().getRole().equalsIgnoreCase("doctor")) {
-            System.out.println("Welcome doctor " + username + "!");
+            okay= "Welcome doctor !";
             doctorName = username;
-            doctorMenu();
+            //doctorMenu();
+         // We check the role
+        }else if (user.getRole().getRole().equalsIgnoreCase("patient")) {
+            okay= "Welcome patient !";
+            patientName = username;
+            //patientMenu();
         }  else {
-            System.out.println("Invalid role");
+            okay = "Invalid role";
         }
+        return okay; 
     }
 
     private static void doctorMenu() throws Exception {
