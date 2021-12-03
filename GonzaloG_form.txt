@@ -1,0 +1,20 @@
+1. Do you have difficulty or pain when opening your mouth, for example, when yawning? -> 2
+2. Do you feel your jaw “sticking”, “locking” or “popping out”? -> 3
+3. Do you have difficulty or pain when you chew, speak, or use your jaws? -> 4
+4. Have you noticed noises in your jaw joints? -> 5
+5. Do your jaws regularly feel stiff or clenched? -> 6
+6. Do you have pain around your ears, temples, or cheeks? -> 7
+7. Do you have frequent headaches or neck pain? -> 8
+8. Have you had a recent injury or trauma to your head, neck, or jaw? -> 6
+9. Have you noticed or felt any recent change in your bite? -> 5
+10. Have you ever been treated for a jaw joint problem? -> 4
+11. Have you noticed that you grind or clench your teeth frequently during sleep? -> 3
+12. Has anyone heard you grind your teeth at night? -> 2
+13. Did your jaw feel sore or fatigued when you woke up in the morning? -> 1
+14. Do you ever have a momentary headache when you wake up in the morning? -> 3
+15. Have you noticed that you grind/clench your teeth during the day? -> 4
+16. Do you have difficulty opening your mouth wide when you wake up? -> 5
+17. Do you feel pain in your teeth when they come in contact with cold air or liquids? -> 6
+18. Do you feel your jaw joint lock or make a clicking sound when you move it? -> 7
+19. Do your teeth or gums feel sore when you wake up in the morning? -> 8
+20. Have you noticed that you have considerable wear on your teeth? -> 9
