@@ -5,7 +5,7 @@
     <class>pojos.users.Role</class>
     <class>pojos.users.User</class>
     <properties>
-      <property name="javax.persistence.jdbc.url" value="jdbc:sqlite:.\db\Telemedicina.db"/>
+      <property name="javax.persistence.jdbc.url" value="jdbc:sqlite:C:./db/Telemedicina.db"/>
       <property name="javax.persistence.jdbc.user" value=""/>
       <property name="javax.persistence.jdbc.driver" value="org.sqlite.JDBC"/>
       <property name="javax.persistence.jdbc.password" value=""/>

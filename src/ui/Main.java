@@ -216,6 +216,7 @@ public class Main {
         String totalText[]= response_login.split(",");
         username = totalText[0];
         password = totalText[1];
+        System.out.println(password);
         
         User user = userManager.checkPassword(username, password);
         // We check if the user/password combination was OK
@@ -594,59 +595,6 @@ public class Main {
             System.out.println("There is no patient with the name " + name);
         }
     }
-
-    private static void patientMenu() throws Exception {
-        while (true) {
-            System.out.println("What would you like to do?");
-            System.out.println("1. Complete form");
-            System.out.println("2. Add EMG");
-            System.out.println("3. Add ECG");
-            System.out.println("4. Search EMG by start date");
-            System.out.println("5. Search ECG by start date");
-            System.out.println("6. Change your user name");
-            System.out.println("7. Change your password");
-            System.out.println("8. Go back");
-            Integer choice = new Integer(0);
-            boolean wrongtext = false;
-            do {
-                System.out.println("Introduce the number of the option you would like to choose: ");
-                try {
-                    choice = Integer.parseInt(reader.readLine());
-                    wrongtext = false;
-                } catch (NumberFormatException ex) {
-                    wrongtext = true;
-                    System.out.println("It's not an int, please enter an int");
-                }
-            } while (choice < 0 || choice > 8 || wrongtext);
-            switch (choice) {
-                case 1:
-               //     completeForm();
-                    break;
-                case 2:
-                 //   addEMG();
-                    break;
-                case 3:
-                   // addECG();
-                    break;
-                case 4:
-                  //  searchEMGByName();
-                    break;
-                case 5:
-                  //  searchECGByName();
-                    break;
-                case 6:
-                    String username = userManager.updateUsername(patientName);
-                    patientManager.updateUsername(patientName, username);
-                    return;
-                case 7:
-                    userManager.updatePassword(patientName);
-                    return;
-                case 8:
-                    return;
-            }
-        }
-    }
-
 
     public static String getPassword(int length) {
         return getPassword(numbers + caps + low_case, length);

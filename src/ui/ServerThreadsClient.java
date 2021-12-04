@@ -56,20 +56,20 @@ public class ServerThreadsClient implements Runnable {
                     break;
                 case 2:
                     String response_login = din.readUTF();
-                    String okay = null;
+                    System.out.println(response_login);
+                    String okay = "";
                     try {
                         okay = ui.Main.login(response_login);
+                        System.out.println(okay);
                     } catch (Exception ex) {
                         Logger.getLogger(ServerThreadsClient.class.getName()).log(Level.SEVERE, null, ex);
                     }
                     if ((okay == "Wrong credentials, please try again!") || (okay == "Invalid role")) {
-
+                        don.writeUTF(okay);
                     } // We check the role
                     else if (okay == "Welcome patient !" ) {
                        don.writeUTF(okay);
-
                        menuPatient();
-
                     }
                     break;
                 case 0:
