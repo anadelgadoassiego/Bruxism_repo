@@ -144,22 +144,23 @@ public class ServerThreadsClient implements Runnable {
                 case 4:
                     break;
                 case 5:
-                    break;
-                case 6:
                     String newName = din.readUTF();
                     /*try {
                         okay = ui.Main.changeUsername(newName);
                     } catch (Exception ex) {
                         Logger.getLogger(ServerThreadsClient.class.getName()).log(Level.SEVERE, null, ex);
                     }*/
-                case 7:
+                    break;
+                case 6:
                     String newPassword = din.readUTF();
                     /*try {
                         okay = ui.Main.changePassword(newPassword);
                     } catch (Exception ex) {
                         Logger.getLogger(ServerThreadsClient.class.getName()).log(Level.SEVERE, null, ex);
                     }*/
-                case 8:
+                    break;
+                case 7:
+                    
                     return;
                 default:
                     break;
