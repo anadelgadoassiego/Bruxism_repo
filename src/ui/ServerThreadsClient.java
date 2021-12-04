@@ -72,8 +72,7 @@ public class ServerThreadsClient implements Runnable {
                         }
                         break;
                     case 0:
-                        dbManager.disconnect();
-                        userManager.disconnect();
+                        ui.Main.GoodBye();
                         return;
                     default:
                         break;

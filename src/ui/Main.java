@@ -304,7 +304,10 @@ public class Main {
         response= "Action Completed";
         return response;
     }
-    
+    public static void GoodBye(){
+        dbManager.disconnect();
+        userManager.disconnect();
+    }
     public static String changePassword(String password){
         String response="";
         userManager.updatePassword(patientName,password);
