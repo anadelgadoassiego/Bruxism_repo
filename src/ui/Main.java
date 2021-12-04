@@ -296,14 +296,20 @@ public class Main {
             }
         }
     }
-    public static void changeUsername(String newName){
+    public static String changeUsername(String newName){
         //si da tiempo comprobar que va bien
+        String response="";
         userManager.updateUsername(patientName,newName);
         patientManager.updateUsername(patientName, newName);
+        response= "Action Completed";
+        return response;
     }
     
-    public static void changePassword(String password){
+    public static String changePassword(String password){
+        String response="";
         userManager.updatePassword(patientName,password);
+        response="Action Completed";
+        return response;
     }
     public static String completeForm(String response_form) throws Exception {
         String responseServer="";

@@ -26,17 +26,14 @@ public class ServerThreadsClient implements Runnable {
         this.socket = socket;
     }
 
-    private static InputStream inputStream; 
-    private static DataInputStream din;
-    private static OutputStream outputStream;
-    private static DataOutputStream don;
+    
     
     @Override
     public void run() {
-        
-        inputStream = null;
-        outputStream = null;
-        
+        InputStream inputStream; 
+        DataInputStream din;
+        OutputStream outputStream;
+        DataOutputStream don;
         try {
             inputStream = socket.getInputStream();
             din= new DataInputStream(inputStream);
@@ -85,17 +82,16 @@ public class ServerThreadsClient implements Runnable {
             
         } catch (IOException ex) {
             Logger.getLogger(ServerThreadsClient.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            System.out.println("Character reception finished 1");
-            releaseResourcesClient(inputStream, socket);
         }
         
 
     }
 
     private static void menuPatient() throws IOException{
-        inputStream = null;
-        outputStream = null;
+        InputStream inputStream; 
+        DataInputStream din;
+        OutputStream outputStream;
+        DataOutputStream don;
         try {
             inputStream = socket.getInputStream();
             din= new DataInputStream(inputStream);
@@ -145,19 +141,21 @@ public class ServerThreadsClient implements Runnable {
                         break;
                     case 5:
                         String newName = din.readUTF();
-                        /*try {
+                        try {
                             okay = ui.Main.changeUsername(newName);
+                            don.writeUTF(okay);
                         } catch (Exception ex) {
                             Logger.getLogger(ServerThreadsClient.class.getName()).log(Level.SEVERE, null, ex);
-                        }*/
+                        }
                         break;
                     case 6:
                         String newPassword = din.readUTF();
-                        /*try {
+                        try {
                             okay = ui.Main.changePassword(newPassword);
+                            don.writeUTF(okay);
                         } catch (Exception ex) {
                             Logger.getLogger(ServerThreadsClient.class.getName()).log(Level.SEVERE, null, ex);
-                        }*/
+                        }
                         break;
                     case 7:
                         //releaseResourcesClient(inputStream, outputStream, din, don);
@@ -168,11 +166,7 @@ public class ServerThreadsClient implements Runnable {
             }
         } catch (IOException ex) {
             Logger.getLogger(ServerThreadsClient.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            System.out.println("Character reception finished");
-            releaseResourcesClient(inputStream, socket);
         }
-        
     }
     
     private static void releaseResourcesClient(InputStream inputStream, Socket socket) {
