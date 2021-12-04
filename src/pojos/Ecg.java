@@ -13,6 +13,7 @@ public class Ecg implements Serializable {
     private Integer id;
     private String name_ecg;
     private Integer patient_id;
+    private byte[] patient_ecg;
 
     public Integer getPatient_id() {
         return patient_id;
@@ -33,6 +34,14 @@ public class Ecg implements Serializable {
         this.patient_id = patient_id;
     }
 
+    public Ecg(String name_ecg, Integer patient_id, byte[] patient_ecg) {
+        this.name_ecg = name_ecg;
+        this.patient_id = patient_id;
+        this.patient_ecg = patient_ecg;
+    }
+
+    
+    
     public Integer getId() {
         return id;
     }
@@ -49,6 +58,16 @@ public class Ecg implements Serializable {
         this.name_ecg = name_ecg;
     }
 
+    public byte[] getPatient_ecg() {
+        return patient_ecg;
+    }
+
+    public void setPatient_ecg(byte[] patient_ecg) {
+        this.patient_ecg = patient_ecg;
+    }
+
+    
+    
     /*
     @Override
     public int hashCode() {

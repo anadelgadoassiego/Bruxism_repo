@@ -11,6 +11,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -117,24 +119,27 @@ public class ServerThreadsClient implements Runnable {
                         }
                         break;
                     case 2:
-                        String response_login = din.readUTF();
-                        okay = "";
-                        try {
-                            okay = ui.Main.login(response_login);
-                        } catch (Exception ex) {
-                            Logger.getLogger(ServerThreadsClient.class.getName()).log(Level.SEVERE, null, ex);
+                        String response_EMG_ECG = din.readUTF();
+                        
+                        int EMG_value, ECG_value;
+                        List <Integer> arrayEMG = new ArrayList <Integer>();
+                        List <Integer> arrayECG = new ArrayList <Integer>();
+                        
+                        
+                        while((EMG_value=din.readInt()) != -10000){
+                            //System.out.println("EMG he llegado: "+EMG_value);
+                            arrayEMG.add(EMG_value);
                         }
-                        if ((okay == "Wrong credentials, please try again!") || (okay == "Invalid role")) {
-
-                        } // We check the role
-                        else if (okay == "Welcome patient !" ) {
-                           don.writeUTF(okay);
-
-                           menuPatient();
-
+                        
+                        while((ECG_value=din.readInt()) != -20000){
+                            //System.out.println("He llegado ECG: "+ECG_value);
+                            arrayECG.add(ECG_value);
                         }
+                        
+                        ui.Main.addEMG_addECG(response_EMG_ECG,arrayEMG,arrayECG);
                         break;
                     case 3:
+                        
                         break;
                     case 4:
                         break;

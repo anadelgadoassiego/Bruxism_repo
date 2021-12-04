@@ -72,12 +72,12 @@ public class SQLiteEcgManager implements EcgManager {
     @Override
     public void add(Ecg ecg) {
         try {
-            String sql = "INSERT INTO ecg (name_ecg, patient_id "
-                    + ") "
-                    + "VALUES (?,?,?,?)";
+            String sql = "INSERT INTO ecg (name_ecg, patient_id, ecg_array) "
+                    + "VALUES (?,?,?)";
             PreparedStatement prep = c.prepareStatement(sql);
             prep.setString(1, ecg.getName_ecg());
             prep.setInt(2, ecg.getPatient_id());
+            prep.setBytes(3, ecg.getPatient_ecg());
             prep.executeUpdate();
             prep.close();
         } catch (SQLException e) {

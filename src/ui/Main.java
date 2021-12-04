@@ -296,6 +296,7 @@ public class Main {
             }
         }
     }
+    
     public static String changeUsername(String newName){
         //si da tiempo comprobar que va bien
         String response="";
@@ -387,7 +388,70 @@ public class Main {
 
 
     }
-      private static void searchECGByName() throws Exception{
+    
+    public static void addEMG_addECG(String response_EMG_ECG,List <Integer> arrayEMG,List <Integer> arrayECG) throws IOException{
+        
+        Integer patient_id = patientManager.searchByUsername(patientName);
+        
+        /*for(int i = 0; i < arrayECG.size(); i++) {
+            System.out.println("DATOS ARRAY: "+arrayECG.get(i)+"\n");
+        }
+        for(int i = 0; i < arrayEMG.size(); i++) {
+            System.out.println("DATOS ARRAY EMG: "+arrayEMG.get(i)+"\n");
+        }*/
+        
+        String name_emg =("EMG_")+response_EMG_ECG +(".txt");
+        String name_ecg =("ECG_")+response_EMG_ECG +(".txt");
+        
+        File file_emg = new File(name_emg);
+        File file_ecg = new File(name_ecg);
+        
+        PrintWriter printWriter = null;
+        try {
+            printWriter = new PrintWriter(file_emg);
+            for(int i = 0; i < arrayEMG.size(); i++) {
+                printWriter.print(arrayEMG.get(i)+"\n");
+            }
+        } catch (IOException ex) {
+            //responseServer = "There was an error while saving";
+
+        } finally {
+            if (printWriter != null) {
+                printWriter.close();
+            }
+
+        }
+        
+        PrintWriter printWriter2 = null;
+        try{
+            printWriter2 = new PrintWriter(file_ecg);
+            for(int i = 0; i < arrayECG.size(); i++) {
+                printWriter2.print(arrayECG.get(i)+"\n");
+            }
+        } catch (IOException ex) {
+            //responseServer = "There was an error while saving";
+
+        } finally {
+            if (printWriter2 != null) {
+                printWriter2.close();
+            }
+
+        }
+        String filePath_emg = name_emg;
+        String filePath_ecg = name_ecg;
+        
+        byte[] patient_emg = Files.readAllBytes(Paths.get(filePath_emg));
+        byte[] patient_ecg = Files.readAllBytes(Paths.get(filePath_ecg));
+        
+        Emg emg = new Emg(name_emg, patient_id,patient_emg);
+        Ecg ecg = new Ecg(name_ecg, patient_id,patient_ecg);
+        
+        //System.out.println("probando: "+patient_emg);
+        emgManager.add(emg);
+        ecgManager.add(ecg);
+    }
+    
+    private static void searchECGByName() throws Exception{
         Integer patient_id = patientManager.searchByUsername(patientName);
         List<Ecg> ecgList = ecgManager.getECGpatient(patient_id);
         searchECGByName_patient(ecgList);

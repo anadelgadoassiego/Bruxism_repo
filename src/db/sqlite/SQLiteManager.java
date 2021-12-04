@@ -76,13 +76,13 @@ public class SQLiteManager implements DBManager {
             stmt1.executeUpdate(sql3);
             stmt1 = c.createStatement();
             String sql4 = "CREATE TABLE emg " + "(id     INTEGER  PRIMARY KEY AUTOINCREMENT,"
-                    + " name_emg   TEXT   NOT NULL," + " patient_id INTEGER REFERENCES patients(id) ON UPDATE CASCADE ON DELETE SET NULL"
-                    + ")";
+                    + " name_emg   TEXT   NOT NULL," + " patient_id INTEGER REFERENCES patients(id) ON UPDATE CASCADE ON DELETE SET NULL,"
+                    + " emg_array BYTES )";
             stmt1.executeUpdate(sql4);
             stmt1 = c.createStatement();
             String sql5 = "CREATE TABLE ecg " + "(id     INTEGER  PRIMARY KEY AUTOINCREMENT,"
-                    + " name_ecg   TEXT   NOT NULL," + "patient_id INTEGER REFERENCES patients(id) ON UPDATE CASCADE ON DELETE SET NULL"
-                    + ")";
+                    + " name_ecg   TEXT   NOT NULL," + "patient_id INTEGER REFERENCES patients(id) ON UPDATE CASCADE ON DELETE SET NULL,"
+                    + " ecg_array BYTES )";
             stmt1.executeUpdate(sql5);
 
             stmt1.close();
