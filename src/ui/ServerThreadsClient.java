@@ -9,12 +9,15 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import pojos.Ecg;
+import pojos.Emg;
 
 public class ServerThreadsClient implements Runnable {
 
@@ -83,27 +86,31 @@ public class ServerThreadsClient implements Runnable {
             
         } catch (IOException ex) {
             Logger.getLogger(ServerThreadsClient.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(ServerThreadsClient.class.getName()).log(Level.SEVERE, null, ex);
         }
         
 
     }
 
-    private static void menuPatient() throws IOException{
-        InputStream inputStream; 
-        DataInputStream din;
-        OutputStream outputStream;
-        DataOutputStream don;
+    private static void menuPatient() throws IOException, Exception{
+        InputStream inputStream2; 
+        DataInputStream din2;
+        OutputStream outputStream2;
+        DataOutputStream don2;
+        ObjectOutputStream objectOutputStream = null;
         try {
-            inputStream = socket.getInputStream();
-            din= new DataInputStream(inputStream);
-            outputStream = socket.getOutputStream();
-            don = new DataOutputStream(outputStream);
+            inputStream2 = socket.getInputStream();
+            din2= new DataInputStream(inputStream2);
+            outputStream2 = socket.getOutputStream();
+            don2 = new DataOutputStream(outputStream2);
+            objectOutputStream = new ObjectOutputStream(outputStream2);
             while(true) {
-                int choice= din.readInt();
+                int choice= din2.readInt();
                 System.out.println(choice);
                 switch (choice) {
                     case 1:
-                       String response_form = din.readUTF();
+                       String response_form = din2.readUTF();
                        String okay="";
 
                         try {
@@ -115,23 +122,23 @@ public class ServerThreadsClient implements Runnable {
 
                         } // We check the role
                         else if (okay == "Form saved successfully" ) {
-                           don.writeUTF(okay);
+                           don2.writeUTF(okay);
                         }
                         break;
                     case 2:
-                        String response_EMG_ECG = din.readUTF();
+                        String response_EMG_ECG = din2.readUTF();
                         
                         int EMG_value, ECG_value;
                         List <Integer> arrayEMG = new ArrayList <Integer>();
                         List <Integer> arrayECG = new ArrayList <Integer>();
                         
                         
-                        while((EMG_value=din.readInt()) != -10000){
+                        while((EMG_value=din2.readInt()) != -10000){
                             //System.out.println("EMG he llegado: "+EMG_value);
                             arrayEMG.add(EMG_value);
                         }
                         
-                        while((ECG_value=din.readInt()) != -20000){
+                        while((ECG_value=din2.readInt()) != -20000){
                             //System.out.println("He llegado ECG: "+ECG_value);
                             arrayECG.add(ECG_value);
                         }
@@ -139,24 +146,35 @@ public class ServerThreadsClient implements Runnable {
                         ui.Main.addEMG_addECG(response_EMG_ECG,arrayEMG,arrayECG);
                         break;
                     case 3:
-                        
+                        List<Emg> emgList = new ArrayList <Emg>();;
+                        emgList = ui.Main.searchEMGByName();
+                        for(int i = 0; i < emgList.size(); i++) {
+                            objectOutputStream.writeObject(emgList.get(i));
+                        }
+                        objectOutputStream.writeObject(null);
                         break;
                     case 4:
+                        List<Ecg> ecgList = new ArrayList <Ecg>();;
+                        ecgList = ui.Main.searchECGByName();
+                        for(int i = 0; i < ecgList.size(); i++) {
+                            objectOutputStream.writeObject(ecgList.get(i));
+                        }
+                        objectOutputStream.writeObject(null);
                         break;
                     case 5:
-                        String newName = din.readUTF();
+                        String newName = din2.readUTF();
                         try {
                             okay = ui.Main.changeUsername(newName);
-                            don.writeUTF(okay);
+                            don2.writeUTF(okay);
                         } catch (Exception ex) {
                             Logger.getLogger(ServerThreadsClient.class.getName()).log(Level.SEVERE, null, ex);
                         }
                         break;
                     case 6:
-                        String newPassword = din.readUTF();
+                        String newPassword = din2.readUTF();
                         try {
                             okay = ui.Main.changePassword(newPassword);
-                            don.writeUTF(okay);
+                            don2.writeUTF(okay);
                         } catch (Exception ex) {
                             Logger.getLogger(ServerThreadsClient.class.getName()).log(Level.SEVERE, null, ex);
                         }

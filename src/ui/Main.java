@@ -237,7 +237,7 @@ public class Main {
         }
         return okay; 
     }
-
+/*
     private static void doctorMenu() throws Exception {
         while (true) {
             System.out.println("What would you like to do?");
@@ -296,7 +296,7 @@ public class Main {
             }
         }
     }
-    
+*/
     public static String changeUsername(String newName){
         //si da tiempo comprobar que va bien
         String response="";
@@ -388,6 +388,62 @@ public class Main {
 
 
     }
+     
+    private static void addPatient() throws Exception {
+        System.out.println("Please, enter the following information: ");
+        System.out.println("Name: ");
+        String name = reader.readLine();
+        System.out.println("Age: ");
+        Integer age = Integer.parseInt(reader.readLine());
+        System.out.println("Weight: ");
+        Float weight = Float.parseFloat(reader.readLine());
+        System.out.println("Height: ");
+        Float height = Float.parseFloat(reader.readLine());
+        System.out.println("Gender: ");
+        String gender = reader.readLine();
+
+        Patient patient = new Patient(name, age, weight, height, gender);
+
+        String username = "";
+        boolean distinctUser = false;
+        do {
+            System.out.println("Introduce a username for the patient: ");
+            username = reader.readLine();
+            List<String> existUsernames = new ArrayList<String>();
+            existUsernames = patientManager.getUsernames();
+            if (existUsernames.contains(username)) {
+                distinctUser = true;
+            } else {
+                distinctUser = false;
+            }
+        } while (distinctUser);
+
+        String UserName = username;
+        System.out.print("Password: ");
+        String password = getPassword();
+      
+        // Create the password's hash
+        MessageDigest md = MessageDigest.getInstance("MD5");
+        md.update(password.getBytes());
+        byte[] hash = md.digest();
+        int roleId = 1;
+        // Get the chosen role from the database
+        Role chosenRole = userManager.getRole(roleId);
+        // Create the user and store it
+        User user = new User(UserName, hash, chosenRole);
+        userManager.createUser(user);
+        patient.setNameuser(UserName);
+        patientManager.add(patient);
+        int patientId=dbManager.getLastId();
+        System.out.println(patientId);
+        int doctorId = doctorManager.getId(doctorName);
+        System.out.println(doctorId);
+        doctorManager.asign(doctorId, patientId);
+
+        
+        
+    }
+
     
     public static void addEMG_addECG(String response_EMG_ECG,List <Integer> arrayEMG,List <Integer> arrayECG) throws IOException{
         
@@ -451,10 +507,17 @@ public class Main {
         ecgManager.add(ecg);
     }
     
-    private static void searchECGByName() throws Exception{
+    public static List<Ecg> searchECGByName() throws Exception{
         Integer patient_id = patientManager.searchByUsername(patientName);
         List<Ecg> ecgList = ecgManager.getECGpatient(patient_id);
-        searchECGByName_patient(ecgList);
+        return ecgList;
+    }
+     public static List<Emg> searchEMGByName() throws Exception{
+        System.out.println("Searching.... ");
+
+        Integer patient_id = patientManager.searchByUsername(patientName);
+        List<Emg> emgList = emgManager.getEMGpatient(patient_id);
+        return emgList;
     }
     
     private static void deletePatient() throws Exception {

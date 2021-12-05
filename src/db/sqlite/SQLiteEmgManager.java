@@ -107,8 +107,8 @@ public class SQLiteEmgManager implements EmgManager {
             while (rs.next()) {
                 int id = rs.getInt("id");
                 String emgName = rs.getString("name_emg");
-
-                Emg newemg = new Emg(id, emgName, patient_id);
+                byte[] emg_array = rs.getBytes("emg_array");
+                Emg newemg = new Emg(id, emgName, patient_id,emg_array);
                 emgsList.add(newemg);
             }
         } catch (SQLException e) {

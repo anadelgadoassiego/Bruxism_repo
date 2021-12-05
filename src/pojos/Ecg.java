@@ -15,6 +15,13 @@ public class Ecg implements Serializable {
     private Integer patient_id;
     private byte[] patient_ecg;
 
+    public Ecg(Integer id, String name_ecg, Integer patient_id, byte[] patient_ecg) {
+        this.id = id;
+        this.name_ecg = name_ecg;
+        this.patient_id = patient_id;
+        this.patient_ecg = patient_ecg;
+    }
+
     public Integer getPatient_id() {
         return patient_id;
     }
