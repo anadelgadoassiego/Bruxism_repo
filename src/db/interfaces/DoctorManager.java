@@ -21,4 +21,6 @@ public interface DoctorManager {
     public void asign( int doctorId, int patientId);
     
     public int getId(String username);
+    
+    public List<Doctor> getDoctors();
 }

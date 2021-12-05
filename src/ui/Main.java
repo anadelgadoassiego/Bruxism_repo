@@ -732,6 +732,16 @@ public class Main {
         }
     }
 
+    public static List<Doctor> availableDoctors() throws Exception{
+        List<Doctor> doctorList = doctorManager.getDoctors();
+        return doctorList;
+    }
+    
+    public static void chooseDoctor(int doctor_id) throws Exception{
+        int patient_id = patientManager.searchByUsername(patientName);
+        doctorManager.asign(doctor_id, patient_id);
+    }
+    
     public static String getPassword(int length) {
         return getPassword(numbers + caps + low_case, length);
     }

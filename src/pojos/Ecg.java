@@ -10,6 +10,7 @@ import java.sql.Date;
 
 public class Ecg implements Serializable {
 
+    private static final long serialVersionUID = -9008665011082537295L;
     private Integer id;
     private String name_ecg;
     private Integer patient_id;

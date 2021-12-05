@@ -43,6 +43,12 @@ public class Doctor implements Serializable {
         this.nameuser = nameuser;
     }
 
+    public Doctor(Integer id, String full_name, String nameuser) {
+        this.id = id;
+        this.full_name = full_name;
+        this.nameuser = nameuser;
+    }
+
     
 
     

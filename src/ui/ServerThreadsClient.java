@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import pojos.Doctor;
 import pojos.Ecg;
 import pojos.Emg;
 
@@ -180,6 +181,16 @@ public class ServerThreadsClient implements Runnable {
                         }
                         break;
                     case 7:
+                        List<Doctor> doctorList = new ArrayList <Doctor>();;
+                        doctorList = ui.Main.availableDoctors();
+                        for(int i = 0; i < doctorList.size(); i++) {
+                            objectOutputStream.writeObject(doctorList.get(i));
+                        }
+                        objectOutputStream.writeObject(null);
+                        int doctor_id = din2.readInt();
+                        ui.Main.chooseDoctor(doctor_id);
+                        break;
+                    case 8:
                         //releaseResourcesClient(inputStream, outputStream, din, don);
                         return;
                     default:

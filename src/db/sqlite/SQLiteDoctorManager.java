@@ -115,5 +115,23 @@ public class SQLiteDoctorManager implements DoctorManager {
         return doctorId;
     }
 
+    public List<Doctor> getDoctors(){
+        List<Doctor> doctorList = new ArrayList<>();
+        try {
+            String sql = "SELECT * FROM doctors";
+            PreparedStatement prep = c.prepareStatement(sql); 
+            ResultSet rs = prep.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String Fullname = rs.getString("Fullname");
+                String nameuser = rs.getString("nameuser");
+                Doctor newDoctor = new Doctor(id, Fullname, nameuser);
+                doctorList.add(newDoctor);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return doctorList;
+    }
 
 }
