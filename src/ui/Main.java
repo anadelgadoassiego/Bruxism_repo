@@ -285,7 +285,7 @@ public class Main {
         try {
             printWriter = new PrintWriter(file);
             printWriter.print("1. Do you have difficulty or pain when opening your mouth, for example, when yawning? -> " + q1);
-            printWriter.print("\n2. Do you feel your jaw “sticking”, “locking” or “popping out”? -> " + q2);
+            printWriter.print("\n2. Do you feel your jaw sticking, locking or popping out? -> " + q2);
             printWriter.print("\n3. Do you have difficulty or pain when you chew, speak, or use your jaws? -> " + q3);
             printWriter.print("\n4. Have you noticed noises in your jaw joints? -> " + q4);
             printWriter.print("\n5. Do your jaws regularly feel stiff or clenched? -> " + q5);
@@ -303,7 +303,7 @@ public class Main {
             printWriter.print("\n17. Do you feel pain in your teeth when they come in contact with cold air or liquids? -> " + q17);
             printWriter.print("\n18. Do you feel your jaw joint lock or make a clicking sound when you move it? -> " + q18);
             printWriter.print("\n19. Do your teeth or gums feel sore when you wake up in the morning? -> " + q19);
-            printWriter.print("\n20. Have you noticed that you have considerable wear on your teeth? -> " + q20);
+            printWriter.print("\n20. Have you noticed that you have considerable wear on your teeth? -> " + q20 +"\n");
 
         } catch (IOException ex) {
             responseServer = "There was an error while saving";
