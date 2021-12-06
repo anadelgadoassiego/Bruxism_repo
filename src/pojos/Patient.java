@@ -66,6 +66,18 @@ public class Patient implements Serializable {
         this.gender = gender;
     }
 
+    public Patient(Integer id, String full_name, Integer age, Float weight, Float height, String gender, String name_user) {
+        this.id = id;
+        this.full_name = full_name;
+        this.age = age;
+        this.weight = weight;
+        this.height = height;
+        this.gender = gender;
+        this.name_user = name_user;
+    }
+
+    
+    
     public Patient(String full_name) {
         this.full_name = full_name;
 

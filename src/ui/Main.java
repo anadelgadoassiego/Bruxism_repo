@@ -452,37 +452,26 @@ public class Main {
         return emgList;
     }
 
-    private static void deletePatient() throws Exception {
-        searchPatientByName();
-        // System.out.println("Choose a worker to delete, type its ID: ");
-        Integer patient_id = new Integer(0);
-        boolean wrongtext = false;
-        do {
-            System.out.println("Choose a patient to delete, type its ID: ");
-            do {
-                try {
-                    patient_id = Integer.parseInt(reader.readLine());
-                    wrongtext = false;
-                } catch (NumberFormatException ex) {
-                    wrongtext = true;
-                    System.out.println("It's not a int, please enter a int.");
-                }
-            } while (wrongtext);
-        } while (patientManager.getPatient(patient_id) == null);
-        Patient patient = patientManager.getPatient(patient_id);
-
+    public static void deletePatient(int id) throws Exception {
+        Patient patient = patientManager.getPatient(id);
         String name = patient.getNameuser();
-        System.out.println(name);
         userManager.deletePatient(name);
-        patientManager.delete(patient_id);
-        System.out.println("Deletion finished.");
-
+        patientManager.delete(id);
     }
 
-    public static List<Patient> searchPatientByName(String name) throws Exception {
-        List<Patient> patientList = patientManager.searchByName(name);
+    public static List<Patient> searchPatientByName() throws Exception {
+        int doctorId = doctorManager.getId(doctorName);
+        List<Patient> patientList = doctorManager.getPatientsOfDoctor(doctorId);
         return patientList;
     }
+    
+    public static Patient searchForm(int id) throws Exception {
+        byte[] form = patientManager.searchForm(id);
+        Patient patient = new Patient();
+        patient.setPatient_form(form);
+        return patient;
+    }
+    
 
     private static void searchEMGByPatient() throws Exception {
         searchPatientByName();

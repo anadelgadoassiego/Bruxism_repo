@@ -172,19 +172,23 @@ public class SQLitePatientManager implements PatientManager {
             e.printStackTrace();
         }
     }
-/*
-    @Override
-    public void addForm(Patient patient){
+
+    
+    
+    public byte[] searchForm(int patient_id) {
         byte[] form = null;
+        List<Patient> patientsList = new ArrayList<>();
         try {
-            String sql = "UPDATE patients SET form=? WHERE form=?";
-            PreparedStatement s = c.prepareStatement(sql);
-            s.setBytes(2, form);
-            s.setBytes(1, patient.getPatient_form());
-            s.executeUpdate();
-            s.close();
+            String sql = "SELECT form FROM patients WHERE id LIKE ?";
+            PreparedStatement prep = c.prepareStatement(sql);
+            prep.setInt(1, patient_id);
+            ResultSet rs = prep.executeQuery();
+            while (rs.next()) {
+                form = rs.getBytes("form");
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    }*/
+        return form;
+    }
 }

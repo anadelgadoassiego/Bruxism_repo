@@ -25,4 +25,6 @@ public interface PatientManager {
     public Patient getPatient(int patient_id);
     
     public void addForm(Patient patient);
+    
+    public byte[] searchForm(int patient_id);
 }

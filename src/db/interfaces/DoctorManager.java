@@ -7,6 +7,7 @@ package db.interfaces;
 
 import java.util.List;
 import pojos.Doctor;
+import pojos.Patient;
 
 public interface DoctorManager {
 
@@ -23,4 +24,6 @@ public interface DoctorManager {
     public int getId(String username);
     
     public List<Doctor> getDoctors();
+    
+    public List<Patient> getPatientsOfDoctor(int doctorId);
 }

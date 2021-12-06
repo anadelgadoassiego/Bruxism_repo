@@ -231,9 +231,9 @@ public class ServerThreadsClient implements Runnable {
                 System.out.println(choice);
                 switch (choice) {
                     case 1:
-                       String response = din3.readUTF();
-                        List<Patient> patientList = new ArrayList <Patient>();;
-                        patientList = ui.Main.searchPatientByName(response);
+                        
+                        List<Patient> patientList = new ArrayList <Patient>();
+                        patientList = ui.Main.searchPatientByName();
                         for(int i = 0; i < patientList.size(); i++) {
                             objectOutputStream3.writeObject(patientList.get(i));
                         }
@@ -268,14 +268,25 @@ public class ServerThreadsClient implements Runnable {
                         objectOutputStream3.writeObject(null);
                         break;
                     case 4:
-                        List<Ecg> ecgList = new ArrayList <Ecg>();;
-                        ecgList = ui.Main.searchECGByName();
-                        for(int i = 0; i < ecgList.size(); i++) {
-                            objectOutputStream3.writeObject(ecgList.get(i));
+                        List<Patient> patientList_form = new ArrayList <Patient>();
+                        patientList_form = ui.Main.searchPatientByName();
+                        for(int i = 0; i < patientList_form.size(); i++) {
+                            objectOutputStream3.writeObject(patientList_form.get(i));
                         }
                         objectOutputStream3.writeObject(null);
+                        int patient_id = din3.readInt();
+                        Patient patient = ui.Main.searchForm(patient_id);
+                        objectOutputStream3.writeObject(patient);
                         break;
                     case 5:
+                        List<Patient> patientList_delete = new ArrayList <Patient>();
+                        patientList_delete = ui.Main.searchPatientByName();
+                        for(int i = 0; i < patientList_delete.size(); i++) {
+                            objectOutputStream3.writeObject(patientList_delete.get(i));
+                        }
+                        objectOutputStream3.writeObject(null);
+                        int patient_id = din3.readInt();
+                        ui.Main.deletePatient(patient_id);
                         break;
                     case 6:
                         String newName = din3.readUTF();

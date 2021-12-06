@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import pojos.Doctor;
+import pojos.Patient;
 
 public class SQLiteDoctorManager implements DoctorManager {
 
@@ -83,24 +84,24 @@ public class SQLiteDoctorManager implements DoctorManager {
             e.printStackTrace();
         }
     }
-    
+
     public void asign(int doctorId, int patientId) {
-		// Link Product and Component
-		try {
-			String sql = "INSERT INTO doctorPatients (doctorId,patientId) " + "VALUES (?,?)";
-			PreparedStatement prep = c.prepareStatement(sql);
-			prep.setInt(1, doctorId);
-			prep.setInt(2, patientId);
-			prep.executeUpdate();
-			prep.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-    
+        // Link Product and Component
+        try {
+            String sql = "INSERT INTO doctorPatients (doctorId,patientId) " + "VALUES (?,?)";
+            PreparedStatement prep = c.prepareStatement(sql);
+            prep.setInt(1, doctorId);
+            prep.setInt(2, patientId);
+            prep.executeUpdate();
+            prep.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
-    public int getId (String name) {
-        int doctorId = 0 ;
+    public int getId(String name) {
+        int doctorId = 0;
         try {
             String sql = "SELECT id FROM doctors WHERE nameuser LIKE ?";
             PreparedStatement prep = c.prepareStatement(sql);
@@ -115,11 +116,11 @@ public class SQLiteDoctorManager implements DoctorManager {
         return doctorId;
     }
 
-    public List<Doctor> getDoctors(){
+    public List<Doctor> getDoctors() {
         List<Doctor> doctorList = new ArrayList<>();
         try {
             String sql = "SELECT * FROM doctors";
-            PreparedStatement prep = c.prepareStatement(sql); 
+            PreparedStatement prep = c.prepareStatement(sql);
             ResultSet rs = prep.executeQuery();
             while (rs.next()) {
                 int id = rs.getInt("id");
@@ -132,6 +133,35 @@ public class SQLiteDoctorManager implements DoctorManager {
             e.printStackTrace();
         }
         return doctorList;
+    }
+
+    public List<Patient> getPatientsOfDoctor(int doctorId) {
+        List<Patient> patientList = new ArrayList();
+        try {
+            String sql = "SELECT * FROM doctors AS d JOIN doctorPatients AS dp ON d.id = dp.doctorId "
+                    + "JOIN patients AS p ON dp.patientId=p.id "
+                    + "WHERE d.id = ?";
+            PreparedStatement p = c.prepareStatement(sql);
+            p.setInt(1, doctorId);
+            ResultSet rs = p.executeQuery();
+            boolean productCreated = false;
+            while (rs.next()) {
+                int patientId = rs.getInt(6);
+                String full_name = rs.getString(7);
+                int age = rs.getInt(8);
+                Float weight = rs.getFloat(9);
+                Float height = rs.getFloat(10);
+                String gender = rs.getString(11);
+                String nameuser = rs.getString(12);
+                Patient newPatient = new Patient(patientId, full_name, age, weight, height, gender, nameuser);
+                patientList.add(newPatient);
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return patientList;
     }
 
 }
