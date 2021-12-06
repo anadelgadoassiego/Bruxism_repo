@@ -285,11 +285,12 @@ public class ServerThreadsClient implements Runnable {
                             objectOutputStream3.writeObject(patientList_delete.get(i));
                         }
                         objectOutputStream3.writeObject(null);
-                        int patient_id = din3.readInt();
-                        ui.Main.deletePatient(patient_id);
+                        int patient_id2 = din3.readInt();
+                        ui.Main.deletePatient(patient_id2);
                         break;
                     case 6:
                         String newName = din3.readUTF();
+                        String okay = "";
                         try {
                             okay = ui.Main.changeUsernameDoctor(newName);
                             don3.writeUTF(okay);
@@ -299,9 +300,10 @@ public class ServerThreadsClient implements Runnable {
                         break;
                     case 7:
                         String newPassword = din3.readUTF();
+                        String okay2 = "";
                         try {
-                            okay = ui.Main.changePasswordDoctor(newPassword);
-                            don3.writeUTF(okay);
+                            okay2 = ui.Main.changePasswordDoctor(newPassword);
+                            don3.writeUTF(okay2);
                         } catch (Exception ex) {
                             Logger.getLogger(ServerThreadsClient.class.getName()).log(Level.SEVERE, null, ex);
                         }
