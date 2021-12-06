@@ -31,7 +31,7 @@ import pojos.users.User;
 import static utils.InputOutput.getIntFromKeyboard1to10;
 
 public class Main {
-    
+
     private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd"); // Each time dates are added
     private static BufferedReader reader; // To read from the console
     private static DBManager dbManager;
@@ -45,9 +45,9 @@ public class Main {
     public static String numbers = "0123456789";
     public static String caps = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     public static String low_case = "abcdefghijklmnopqrstuvwxyz";
-   
+
     public static void Menu() throws Exception {
-       
+
         // In order to connect with the DB
         dbManager = new SQLiteManager();
         dbManager.connect();
@@ -58,53 +58,13 @@ public class Main {
         dbManager.createTables();
         userManager = new JPAUserManager();
         userManager.connect();
-        
+
         //To initialize the bufferedReader
         reader = new BufferedReader(new InputStreamReader(System.in));
         System.out.println("Welcome to our database!");
         newRole();
-        
-        
-        // System.out.println("Do you want to create the tables?");
-   /*     
-        while (true) {
-            
-            System.out.println("What do you want to do?");
-            System.out.println("1. Create a new user");
-            System.out.println("2. Login");
-            System.out.println("0. Exit");
-            Integer choice = new Integer(0);
-            
-            boolean wrongtext = false;
-            do {
-                System.out.println("Introduce the number of the option you would like to choose: ");
-                try {
-                    choice = Integer.parseInt(reader.readLine());
-                    wrongtext = false;
-                } catch (NumberFormatException ex) {
-                    wrongtext = true;
-                    System.out.println("It's not an int, please enter an int");
-                }
-            } while (choice < 0 || choice > 2 || wrongtext);
-            switch (choice) {
-                case 1:
-                    newUser();
-                    break;
-                case 2:
-                    login();
-                    break;
-                case 0:
-                    dbManager.disconnect();
-                    userManager.disconnect();
-                    return;
-                default:
-                    break;
-            }
 
-        }
-
-*/
-        }
+    }
 
     private static void newRole() throws Exception {
         String roleName = "patient";
@@ -116,128 +76,85 @@ public class Main {
         System.out.println("Roles Created!!");
     }
 
-    public static void newUser() throws Exception {
-        List<Role> roles = userManager.getRoles();
-        if (roles.isEmpty()) {
-            System.out.println("There are not roles, please create the roles");
-            return;
-        }
-        System.out.println("Please type the new user information: ");
-        System.out.print("Username: ");
-        String username = reader.readLine();
-        System.out.print("Password: ");
-        String password = reader.readLine();
+    public static void newUserDoctor(String response) throws Exception {
+
+        String name, username, password;
+        String totalText[] = response.split(",");
+        name = totalText[0];
+        username = totalText[1];
+        password = totalText[2];
+        int roleId = Integer.parseInt(totalText[3]);
 
         // Create the password's hash
         MessageDigest md = MessageDigest.getInstance("MD5");
         md.update(password.getBytes());
         byte[] hash = md.digest();
         // Show all the roles and let the user choose one
-        Integer roleId = new Integer(0);
-        boolean wrongtext = true;
-        String exit = "1";
-        do {
-            if (exit.equals("yes") || exit.equals("Yes")) {
-                break;
-            }
-            for (Role role : roles) {
+        Role chosenRole = userManager.getRole(roleId);
+        // Create the user and store it
+        User user = new User(username, hash, chosenRole);
+        userManager.createUser(user);
+        Doctor doctor = new Doctor(name, username);
+        doctorManager.add(doctor);
 
-                System.out.println(role);
+    }
 
-            }
-            System.out.print("Type the chosen role ID: ");
-            try {
-                roleId = Integer.parseInt(reader.readLine());
-                wrongtext = false;
-            } catch (NumberFormatException ex) {
-                wrongtext = true;
-                System.out.println("It's not an int, please enter an int");
-            }
-            if (roleId != 2 && roleId != 1) {
-                System.out.println("That's not a valid ID, if you want to exit this option type 'yes': ");
-                exit = reader.readLine();
-            }
-            if (roleId == 1) {
-                System.out.println("Patients can only be created by doctors (not here). Introduce another Id: ");
-                roleId = 3;
-            }
-        } while (roleId != 1 && roleId != 2);
-        if (exit.contentEquals("yes") || exit.contentEquals("Yes")) {
-            return;
-        }
+    public static void newUserPatient(String response) throws Exception {
+        String name, gender, username, password;
+        String totalText[] = response.split(",");
+        name = totalText[0];
+        int age = Integer.parseInt(totalText[1]);
+        float weight = Float.parseFloat(totalText[2]);
+        float height = Float.parseFloat(totalText[3]);
+        gender = totalText[4];
+        username = totalText[5];
+        password = totalText[6];
+        int roleId = Integer.parseInt(totalText[7]);
+
+        MessageDigest md = MessageDigest.getInstance("MD5");
+        md.update(password.getBytes());
+        byte[] hash = md.digest();
+
         Role chosenRole = userManager.getRole(roleId);
         // Create the user and store it
         User user = new User(username, hash, chosenRole);
 
         userManager.createUser(user);
-        
-        //String pharmacyName = username;
-        System.out.println("Enter your full name: ");
-        String fullname = reader.readLine();
 
-        
-        Doctor doctor = new Doctor(fullname,username);
-        doctorManager.add(doctor);
+        Patient patient = new Patient(name, age, weight, height, gender);
+        patient.setNameuser(username);
+        patientManager.add(patient);
 
     }
-    public static void newUserPatient(String response) throws Exception {
-            String name, gender, username, password;
-            String totalText[]= response.split(",");
-            name= totalText[0];
-            int age= Integer.parseInt(totalText[1]);
-            float weight= Float.parseFloat(totalText[2]);
-            float height= Float.parseFloat(totalText[3]);
-            gender= totalText[4];
-            username = totalText[5];
-            password = totalText[6];
-            int roleId= Integer.parseInt(totalText[7]);
-            
-            MessageDigest md = MessageDigest.getInstance("MD5");
-            md.update(password.getBytes());
-            byte[] hash = md.digest();
-            
-            Role chosenRole = userManager.getRole(roleId);
-            // Create the user and store it
-            User user = new User(username, hash, chosenRole);
-
-            userManager.createUser(user);
-
-            
-            Patient patient = new Patient(name,age,weight,height,gender);
-            patient.setNameuser(username);
-            patientManager.add(patient);
-            
-            
-
-        }
 
     public static String login(String response_login) throws Exception {
         String username, password, okay = null;
-        String totalText[]= response_login.split(",");
+        String totalText[] = response_login.split(",");
         username = totalText[0];
         password = totalText[1];
         System.out.println(password);
-        
+
         User user = userManager.checkPassword(username, password);
         // We check if the user/password combination was OK
         if (user == null) {
             okay = "Wrong credentials, please try again!";
         } // We check the role
         else if (user.getRole().getRole().equalsIgnoreCase("doctor")) {
-            okay= "Welcome doctor !";
+            okay = "Welcome doctor !";
             doctorName = username;
             //doctorMenu();
-         // We check the role
-        }else if (user.getRole().getRole().equalsIgnoreCase("patient")) {
-            okay= "Welcome patient !";
+            // We check the role
+        } else if (user.getRole().getRole().equalsIgnoreCase("patient")) {
+            okay = "Welcome patient !";
             patientName = username;
             //patientMenu();
-        }  else {
+        } else {
             okay = "Invalid role";
         }
-        return okay; 
+        return okay;
     }
-/*
+
+    /*
     private static void doctorMenu() throws Exception {
         while (true) {
             System.out.println("What would you like to do?");
@@ -296,54 +213,73 @@ public class Main {
             }
         }
     }
-*/
-    public static String changeUsername(String newName){
+     */
+    public static String changeUsernamePatient(String newName) {
         //si da tiempo comprobar que va bien
-        String response="";
-        userManager.updateUsername(patientName,newName);
+        String response = "";
+        userManager.updateUsername(patientName, newName);
         patientManager.updateUsername(patientName, newName);
-        response= "Action Completed";
+        response = "Action Completed";
         return response;
     }
-    public static void GoodBye(){
+    
+        public static String changeUsernameDoctor(String newName) {
+        //si da tiempo comprobar que va bien
+        String response = "";
+        userManager.updateUsername(doctorName, newName);
+        doctorManager.updateUsername(doctorName, newName);
+        response = "Action Completed";
+        return response;
+    }
+
+    public static void GoodBye() {
         dbManager.disconnect();
         userManager.disconnect();
     }
-    public static String changePassword(String password){
-        String response="";
-        userManager.updatePassword(patientName,password);
-        response="Action Completed";
+
+    public static String changePasswordPatient(String password) {
+        String response = "";
+        userManager.updatePassword(patientName, password);
+        response = "Action Completed";
         return response;
     }
+    
+        public static String changePasswordDoctor(String password) {
+        String response = "";
+        userManager.updatePassword(doctorName, password);
+        response = "Action Completed";
+        return response;
+    }
+
     public static String completeForm(String response_form) throws Exception {
-        String responseServer="";
-        String q1,q2,q3,q4,q5,q6,q7,q8,q9,q10,q11,q12,q13,q14,q15,q16,q17,q18,q19,q20;
-        String totalText[]= response_form.split(",");
-        q1=totalText[0];
-        q2=totalText[1];
-        q3=totalText[2];
-        q4=totalText[3];
-        q5=totalText[4];
-        q6=totalText[5];
-        q7=totalText[6];
-        q8=totalText[7];
-        q9=totalText[8];
-        q10=totalText[9];
-        q11=totalText[10];
-        q12=totalText[11];
-        q13=totalText[12];
-        q14=totalText[13];
-        q15=totalText[14];
-        q16=totalText[15];
-        q17=totalText[16];
-        q18=totalText[17];
-        q19=totalText[18];
-        q20=totalText[19];
-       
+        String responseServer = "";
+        String q1, q2, q3, q4, q5, q6, q7, q8, q9, q10, q11, q12, q13, q14, q15, q16, q17, q18, q19, q20;
+        String totalText[] = response_form.split(",");
+        q1 = totalText[0];
+        q2 = totalText[1];
+        q3 = totalText[2];
+        q4 = totalText[3];
+        q5 = totalText[4];
+        q6 = totalText[5];
+        q7 = totalText[6];
+        q8 = totalText[7];
+        q9 = totalText[8];
+        q10 = totalText[9];
+        q11 = totalText[10];
+        q12 = totalText[11];
+        q13 = totalText[12];
+        q14 = totalText[13];
+        q15 = totalText[14];
+        q16 = totalText[15];
+        q17 = totalText[16];
+        q18 = totalText[17];
+        q19 = totalText[18];
+        q20 = totalText[19];
+
         Integer patient_id = patientManager.searchByUsername(patientName);
         Patient patient = patientManager.getPatient(patient_id);
-       
-        String nameForm = patientName+("_form.txt");
+
+        String nameForm = patientName + ("_form.txt");
         File file = new File(nameForm);
         PrintWriter printWriter = null;
         try {
@@ -370,7 +306,7 @@ public class Main {
             printWriter.print("\n20. Have you noticed that you have considerable wear on your teeth? -> " + q20);
 
         } catch (IOException ex) {
-            responseServer= "There was an error while saving";
+            responseServer = "There was an error while saving";
 
         } finally {
             if (printWriter != null) {
@@ -383,12 +319,11 @@ public class Main {
         System.out.println(patient_form);
         patient.setPatient_form(patient_form);
         patientManager.addForm(patient);
-        responseServer="Form saved successfully";
+        responseServer = "Form saved successfully";
         return responseServer;
 
-
     }
-     
+
     private static void addPatient() throws Exception {
         System.out.println("Please, enter the following information: ");
         System.out.println("Name: ");
@@ -421,7 +356,7 @@ public class Main {
         String UserName = username;
         System.out.print("Password: ");
         String password = getPassword();
-      
+
         // Create the password's hash
         MessageDigest md = MessageDigest.getInstance("MD5");
         md.update(password.getBytes());
@@ -434,39 +369,35 @@ public class Main {
         userManager.createUser(user);
         patient.setNameuser(UserName);
         patientManager.add(patient);
-        int patientId=dbManager.getLastId();
+        int patientId = dbManager.getLastId();
         System.out.println(patientId);
         int doctorId = doctorManager.getId(doctorName);
         System.out.println(doctorId);
         doctorManager.asign(doctorId, patientId);
 
-        
-        
     }
 
-    
-    public static void addEMG_addECG(String response_EMG_ECG,List <Integer> arrayEMG,List <Integer> arrayECG) throws IOException{
-        
+    public static void addEMG_addECG(String response_EMG_ECG, List<Integer> arrayEMG, List<Integer> arrayECG) throws IOException {
+
         Integer patient_id = patientManager.searchByUsername(patientName);
-        
+
         /*for(int i = 0; i < arrayECG.size(); i++) {
             System.out.println("DATOS ARRAY: "+arrayECG.get(i)+"\n");
         }
         for(int i = 0; i < arrayEMG.size(); i++) {
             System.out.println("DATOS ARRAY EMG: "+arrayEMG.get(i)+"\n");
         }*/
-        
-        String name_emg =("EMG_")+response_EMG_ECG +(".txt");
-        String name_ecg =("ECG_")+response_EMG_ECG +(".txt");
-        
+        String name_emg = ("EMG_") + response_EMG_ECG + (".txt");
+        String name_ecg = ("ECG_") + response_EMG_ECG + (".txt");
+
         File file_emg = new File(name_emg);
         File file_ecg = new File(name_ecg);
-        
+
         PrintWriter printWriter = null;
         try {
             printWriter = new PrintWriter(file_emg);
-            for(int i = 0; i < arrayEMG.size(); i++) {
-                printWriter.print(arrayEMG.get(i)+"\n");
+            for (int i = 0; i < arrayEMG.size(); i++) {
+                printWriter.print(arrayEMG.get(i) + "\n");
             }
         } catch (IOException ex) {
             //responseServer = "There was an error while saving";
@@ -477,12 +408,12 @@ public class Main {
             }
 
         }
-        
+
         PrintWriter printWriter2 = null;
-        try{
+        try {
             printWriter2 = new PrintWriter(file_ecg);
-            for(int i = 0; i < arrayECG.size(); i++) {
-                printWriter2.print(arrayECG.get(i)+"\n");
+            for (int i = 0; i < arrayECG.size(); i++) {
+                printWriter2.print(arrayECG.get(i) + "\n");
             }
         } catch (IOException ex) {
             //responseServer = "There was an error while saving";
@@ -495,46 +426,47 @@ public class Main {
         }
         String filePath_emg = name_emg;
         String filePath_ecg = name_ecg;
-        
+
         byte[] patient_emg = Files.readAllBytes(Paths.get(filePath_emg));
         byte[] patient_ecg = Files.readAllBytes(Paths.get(filePath_ecg));
-        
-        Emg emg = new Emg(name_emg, patient_id,patient_emg);
-        Ecg ecg = new Ecg(name_ecg, patient_id,patient_ecg);
-        
+
+        Emg emg = new Emg(name_emg, patient_id, patient_emg);
+        Ecg ecg = new Ecg(name_ecg, patient_id, patient_ecg);
+
         //System.out.println("probando: "+patient_emg);
         emgManager.add(emg);
         ecgManager.add(ecg);
     }
-    
-    public static List<Ecg> searchECGByName() throws Exception{
+
+    public static List<Ecg> searchECGByName() throws Exception {
         Integer patient_id = patientManager.searchByUsername(patientName);
         List<Ecg> ecgList = ecgManager.getECGpatient(patient_id);
         return ecgList;
     }
-     public static List<Emg> searchEMGByName() throws Exception{
+
+    public static List<Emg> searchEMGByName() throws Exception {
         System.out.println("Searching.... ");
 
         Integer patient_id = patientManager.searchByUsername(patientName);
         List<Emg> emgList = emgManager.getEMGpatient(patient_id);
         return emgList;
     }
-    
+
     private static void deletePatient() throws Exception {
-        searchPatientByName();   
+        searchPatientByName();
         // System.out.println("Choose a worker to delete, type its ID: ");
         Integer patient_id = new Integer(0);
         boolean wrongtext = false;
         do {
             System.out.println("Choose a patient to delete, type its ID: ");
             do {
-                    try {
-                            patient_id = Integer.parseInt(reader.readLine());
-                            wrongtext = false;
-                    } catch (NumberFormatException ex) {
-                            wrongtext = true;
-                            System.out.println("It's not a int, please enter a int.");
-                    }
+                try {
+                    patient_id = Integer.parseInt(reader.readLine());
+                    wrongtext = false;
+                } catch (NumberFormatException ex) {
+                    wrongtext = true;
+                    System.out.println("It's not a int, please enter a int.");
+                }
             } while (wrongtext);
         } while (patientManager.getPatient(patient_id) == null);
         Patient patient = patientManager.getPatient(patient_id);
@@ -544,18 +476,12 @@ public class Main {
         userManager.deletePatient(name);
         patientManager.delete(patient_id);
         System.out.println("Deletion finished.");
-    
-    }
-    
 
-    private static void searchPatientByName() throws Exception {
-        System.out.println("Please, enter the following information");
-        System.out.println("Enter the name of the patient you want to search: ");
-        String name = reader.readLine();
+    }
+
+    public static List<Patient> searchPatientByName(String name) throws Exception {
         List<Patient> patientList = patientManager.searchByName(name);
-        for (Patient patient : patientList) {
-            System.out.println(patient);
-        }
+        return patientList;
     }
 
     private static void searchEMGByPatient() throws Exception {
@@ -601,40 +527,38 @@ public class Main {
                 break;
 
         }
-        
-        
 
     }
-    
-    public static void searchEMGByName_patient(List<Emg> emgList) throws Exception{
+
+    public static void searchEMGByName_patient(List<Emg> emgList) throws Exception {
         String month;
         int day;
         System.out.println("Introduce the month");
         month = reader.readLine();
         System.out.println("Introduce day");
         day = Integer.parseInt(reader.readLine());
-        
-        String name_emg = day + month ;
+
+        String name_emg = day + month;
         String name_select;
-        for (Emg emg  : emgList) {
-             name_select = emg.getName_emg();
-             if (name_select.contains(name_emg)){
+        for (Emg emg : emgList) {
+            name_select = emg.getName_emg();
+            if (name_select.contains(name_emg)) {
                 System.out.println(name_select);
-             }
-        } 
-        
+            }
+        }
+
         System.out.println("Introduce the number of the emg");
         int position = Integer.parseInt(reader.readLine());
-        name_emg = day + month + "_" + position ; 
-        for (Emg emg : emgList){
+        name_emg = day + month + "_" + position;
+        for (Emg emg : emgList) {
             name_select = emg.getName_emg();
-             if (name_select == name_emg){
+            if (name_select == name_emg) {
                 System.out.println(emg);
-             }
+            }
         }
-        
+
     }
-    
+
     private static void searchECGByPatient() throws Exception {
         searchPatientByName();
         Integer patient_id = new Integer(0);
@@ -678,38 +602,36 @@ public class Main {
                 break;
 
         }
-        
-        
 
     }
-    
-    public static void searchECGByName_patient(List<Ecg> ecgList) throws Exception{
+
+    public static void searchECGByName_patient(List<Ecg> ecgList) throws Exception {
         String month;
         int day;
         System.out.println("Introduce the month");
         month = reader.readLine();
         System.out.println("Introduce day");
         day = Integer.parseInt(reader.readLine());
-        
-        String name_ecg = day + month ;
+
+        String name_ecg = day + month;
         String name_select;
-        for (Ecg ecg  : ecgList) {
-             name_select = ecg.getName_ecg();
-             if (name_select.contains(name_ecg)){
+        for (Ecg ecg : ecgList) {
+            name_select = ecg.getName_ecg();
+            if (name_select.contains(name_ecg)) {
                 System.out.println(name_select);
-             }
-        } 
-        
+            }
+        }
+
         System.out.println("Introduce the number of the emg");
         int position = Integer.parseInt(reader.readLine());
-        name_ecg = day + month + "_" + position ; 
-        for (Ecg ecg : ecgList){
+        name_ecg = day + month + "_" + position;
+        for (Ecg ecg : ecgList) {
             name_select = ecg.getName_ecg();
-             if (name_select == name_ecg){
+            if (name_select == name_ecg) {
                 System.out.println(ecg);
-             }
+            }
         }
-        
+
     }
 
     private static void searchFormByName() throws Exception {
@@ -732,16 +654,16 @@ public class Main {
         }
     }
 
-    public static List<Doctor> availableDoctors() throws Exception{
+    public static List<Doctor> availableDoctors() throws Exception {
         List<Doctor> doctorList = doctorManager.getDoctors();
         return doctorList;
     }
-    
-    public static void chooseDoctor(int doctor_id) throws Exception{
+
+    public static void chooseDoctor(int doctor_id) throws Exception {
         int patient_id = patientManager.searchByUsername(patientName);
         doctorManager.asign(doctor_id, patient_id);
     }
-    
+
     public static String getPassword(int length) {
         return getPassword(numbers + caps + low_case, length);
     }
@@ -759,7 +681,7 @@ public class Main {
     public static String getPassword() {
         return getPassword(8);
     }
-    
+
     private static void releaseResourcesServer(ServerSocket serverSocket) {
         try {
             serverSocket.close();
@@ -768,4 +690,3 @@ public class Main {
         }
     }
 }
-
