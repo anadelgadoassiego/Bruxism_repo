@@ -84,7 +84,8 @@ public class SQLiteEmgManager implements EmgManager {
                 int id = rs.getInt("id");
                 String emgName = rs.getString("name_emg");
                 byte[] emg_array = rs.getBytes("emg_array");
-                Emg newemg = new Emg(id, emgName, patient_id,emg_array);
+                byte[] emg_form = rs.getBytes("emg_form");
+                Emg newemg = new Emg(id, emgName, patient_id,emg_array,emg_form);
                 emgsList.add(newemg);
             }
         } catch (SQLException e) {
@@ -93,9 +94,20 @@ public class SQLiteEmgManager implements EmgManager {
         return emgsList;
     }
 
-    @Override
-    public List<Emg> searchByStartDate(Date start_date) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+    
 
+    @Override
+    public void addForm(Emg emg){
+        byte[] form = null;
+        try {
+            String sql = "UPDATE emg SET emg_form=? WHERE id=?";
+            PreparedStatement s = c.prepareStatement(sql);
+            s.setBytes(1, emg.getForm());
+            s.setInt(2, emg.getId());
+            s.executeUpdate();
+            s.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

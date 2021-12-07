@@ -139,6 +139,8 @@ public class ServerThreadsClient implements Runnable {
                         }
                         break;
                     case 2:
+                        String response_form_ecg_emg = din2.readUTF();
+                                                
                         String response_EMG_ECG = din2.readUTF();
                         
                         int EMG_value, ECG_value;
@@ -156,7 +158,7 @@ public class ServerThreadsClient implements Runnable {
                             arrayECG.add(ECG_value);
                         }
                         
-                        ui.Main.addEMG_addECG(response_EMG_ECG,arrayEMG,arrayECG);
+                        ui.Main.addEMG_addECG(response_EMG_ECG,arrayEMG,arrayECG,response_form_ecg_emg);
                         break;
                     case 3:
                         List<Emg> emgList = new ArrayList <Emg>();;

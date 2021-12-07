@@ -262,30 +262,37 @@ public class Main {
 
     }
 
-    public static void addEMG_addECG(String response_EMG_ECG, List<Integer> arrayEMG, List<Integer> arrayECG) throws IOException {
-
+    public static void addEMG_addECG(String response_EMG_ECG, List<Integer> arrayEMG, List<Integer> arrayECG, String form_ecg_emg) throws IOException {
+        String responseServer = "";
+        String q1, q2, q3, q4, q5, q6, q7;
+        String totalText[] = form_ecg_emg.split(",");
+        q1 = totalText[0];
+        q2 = totalText[1];
+        q3 = totalText[2];
+        q4 = totalText[3];
+        q5 = totalText[4];
+        q6 = totalText[5];
+        q7 = totalText[6];
+        
         Integer patient_id = patientManager.searchByUsername(patientName);
+        Patient patient = patientManager.getPatient(patient_id);
 
-        /*for(int i = 0; i < arrayECG.size(); i++) {
-            System.out.println("DATOS ARRAY: "+arrayECG.get(i)+"\n");
-        }
-        for(int i = 0; i < arrayEMG.size(); i++) {
-            System.out.println("DATOS ARRAY EMG: "+arrayEMG.get(i)+"\n");
-        }*/
-        String name_emg = ("EMG_") + response_EMG_ECG + (".txt");
-        String name_ecg = ("ECG_") + response_EMG_ECG + (".txt");
-
-        File file_emg = new File(name_emg);
-        File file_ecg = new File(name_ecg);
-
+        String namePatient = patient.getFull_name();
+        String nameForm_ecg_emg = patientName + "_" + q7 + "_form_ECG_EMG.txt";
+        
+        File file = new File(nameForm_ecg_emg);
         PrintWriter printWriter = null;
         try {
-            printWriter = new PrintWriter(file_emg);
-            for (int i = 0; i < arrayEMG.size(); i++) {
-                printWriter.print(arrayEMG.get(i) + "\n");
-            }
+            printWriter = new PrintWriter(file);
+            printWriter.print("1. Level of laboral concerns: " + q1);
+            printWriter.print("\n2. Level of personal concerns: " + q2);
+            printWriter.print("\n3. Have you been stress today?: " + q3);
+            printWriter.print("\n4. Do you feel tired?: " + q4);
+            printWriter.print("\n5. Have you noticed that you grind/clench your teeth during the day?: " + q5);
+            printWriter.print("\n6. Additional important information you want to share: " + q6+"\n");
+
         } catch (IOException ex) {
-            //responseServer = "There was an error while saving";
+            responseServer = "There was an error while saving";
 
         } finally {
             if (printWriter != null) {
@@ -293,12 +300,27 @@ public class Main {
             }
 
         }
+        String filePath = nameForm_ecg_emg;
+        byte[] patient_form_ecg_emg = Files.readAllBytes(Paths.get(filePath));
+        Emg emg = new Emg();
+        Ecg ecg = new Ecg();
+        emg.setForm(patient_form_ecg_emg);
+        ecg.setForm(patient_form_ecg_emg);
+        emgManager.addForm(emg);
+        ecgManager.addForm(ecg);
+        
+        String name_emg = ("EMG_") + response_EMG_ECG + (".txt");
+        String name_ecg = ("ECG_") + response_EMG_ECG + (".txt");
+
+        File file_emg = new File(name_emg);
+        File file_ecg = new File(name_ecg);
 
         PrintWriter printWriter2 = null;
         try {
-            printWriter2 = new PrintWriter(file_ecg);
-            for (int i = 0; i < arrayECG.size(); i++) {
-                printWriter2.print(arrayECG.get(i) + "\n");
+            printWriter2 = new PrintWriter(file_emg);
+            printWriter2.print(namePatient+" "+q7 + "\n");
+            for (int i = 0; i < arrayEMG.size(); i++) {
+                printWriter2.print(arrayEMG.get(i) + "\n");
             }
         } catch (IOException ex) {
             //responseServer = "There was an error while saving";
@@ -309,18 +331,35 @@ public class Main {
             }
 
         }
+
+        PrintWriter printWriter3 = null;
+        try {
+            printWriter3 = new PrintWriter(file_ecg);
+            printWriter3.print(namePatient+" "+q7 + "\n");
+            for (int i = 0; i < arrayECG.size(); i++) {
+                printWriter3.print(arrayECG.get(i) + "\n");
+            }
+        } catch (IOException ex) {
+            //responseServer = "There was an error while saving";
+
+        } finally {
+            if (printWriter3 != null) {
+                printWriter3.close();
+            }
+
+        }
         String filePath_emg = name_emg;
         String filePath_ecg = name_ecg;
 
         byte[] patient_emg = Files.readAllBytes(Paths.get(filePath_emg));
         byte[] patient_ecg = Files.readAllBytes(Paths.get(filePath_ecg));
 
-        Emg emg = new Emg(name_emg, patient_id, patient_emg);
-        Ecg ecg = new Ecg(name_ecg, patient_id, patient_ecg);
+        Emg emg2 = new Emg(name_emg, patient_id, patient_emg);
+        Ecg ecg2 = new Ecg(name_ecg, patient_id, patient_ecg);
 
         //System.out.println("probando: "+patient_emg);
-        emgManager.add(emg);
-        ecgManager.add(ecg);
+        emgManager.add(emg2);
+        ecgManager.add(ecg2);
     }
 
     public static List<Ecg> searchECGByName() throws Exception {

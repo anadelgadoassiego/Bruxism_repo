@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.sql.Date;
 import java.util.List;
 import pojos.Ecg;
+//import pojos.Patient;
 
 public class SQLiteEcgManager implements EcgManager {
 
@@ -83,7 +84,8 @@ public class SQLiteEcgManager implements EcgManager {
                 int id = rs.getInt("id");
                 String ecgName = rs.getString("name_ecg");
                 byte[] ecg_array = rs.getBytes("ecg_array");
-                Ecg newecg = new Ecg(id, ecgName, patient_id,ecg_array);
+                byte[] ecg_form = rs.getBytes("ecg_form");
+                Ecg newecg = new Ecg(id, ecgName, patient_id,ecg_array,ecg_form);
                 ecgsList.add(newecg);
             }
         } catch (SQLException e) {
@@ -92,9 +94,20 @@ public class SQLiteEcgManager implements EcgManager {
         return ecgsList;
     }
 
-    @Override
-    public List<Ecg> searchByStartDate(Date start_date) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+    
 
+    @Override
+    public void addForm(Ecg ecg){
+        byte[] form = null;
+        try {
+            String sql = "UPDATE ecg SET ecg_form=? WHERE id=?";
+            PreparedStatement s = c.prepareStatement(sql);
+            s.setBytes(1, ecg.getForm());
+            s.setInt(2, ecg.getId());
+            s.executeUpdate();
+            s.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }
