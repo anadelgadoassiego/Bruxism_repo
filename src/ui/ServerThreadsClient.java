@@ -240,32 +240,36 @@ public class ServerThreadsClient implements Runnable {
                         objectOutputStream3.writeObject(null);
                         break;
                     case 2:
-                        String response_EMG_ECG = din3.readUTF();
-                        
-                        int EMG_value, ECG_value;
-                        List <Integer> arrayEMG = new ArrayList <Integer>();
-                        List <Integer> arrayECG = new ArrayList <Integer>();
-                        
-                        
-                        while((EMG_value=din3.readInt()) != -10000){
-                            //System.out.println("EMG he llegado: "+EMG_value);
-                            arrayEMG.add(EMG_value);
+                        List<Patient> patientList_emg = new ArrayList <Patient>();
+                        patientList_emg = ui.Main.searchPatientByName();
+                        for(int i = 0; i < patientList_emg.size(); i++) {
+                            objectOutputStream3.writeObject(patientList_emg.get(i));
                         }
-                        
-                        while((ECG_value=din3.readInt()) != -20000){
-                            //System.out.println("He llegado ECG: "+ECG_value);
-                            arrayECG.add(ECG_value);
-                        }
-                        
-                        ui.Main.addEMG_addECG(response_EMG_ECG,arrayEMG,arrayECG);
-                        break;
-                    case 3:
-                        List<Emg> emgList = new ArrayList <Emg>();;
-                        emgList = ui.Main.searchEMGByName();
+                        objectOutputStream3.writeObject(null);
+                        int patient_id_emg = din3.readInt();
+                        List<Emg> emgList = new ArrayList <Emg>();
+                        emgList = ui.Main.searchEMG(patient_id_emg);
                         for(int i = 0; i < emgList.size(); i++) {
                             objectOutputStream3.writeObject(emgList.get(i));
                         }
                         objectOutputStream3.writeObject(null);
+                        
+                        break;
+                    case 3:
+                        List<Patient> patientList_ecg = new ArrayList <Patient>();
+                        patientList_ecg = ui.Main.searchPatientByName();
+                        for(int i = 0; i < patientList_ecg.size(); i++) {
+                            objectOutputStream3.writeObject(patientList_ecg.get(i));
+                        }
+                        objectOutputStream3.writeObject(null);
+                        int patient_id_ecg = din3.readInt();
+                        List<Ecg> ecgList = new ArrayList <Ecg>();;
+                        ecgList = ui.Main.searchECG(patient_id_ecg);
+                        for(int i = 0; i < ecgList.size(); i++) {
+                            objectOutputStream3.writeObject(ecgList.get(i));
+                        }
+                        objectOutputStream3.writeObject(null);
+                        
                         break;
                     case 4:
                         List<Patient> patientList_form = new ArrayList <Patient>();

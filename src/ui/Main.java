@@ -154,66 +154,7 @@ public class Main {
         return okay;
     }
 
-    /*
-    private static void doctorMenu() throws Exception {
-        while (true) {
-            System.out.println("What would you like to do?");
-            System.out.println("1. Add patient");
-            System.out.println("2. Search patient by name");
-            System.out.println("3. Search EMG by name");
-            System.out.println("4. Search ECG by name");
-            System.out.println("5. Search Form by name");
-            System.out.println("6. Delete patient");
-            System.out.println("7. Change your userName");
-            System.out.println("8. Change your password");
-            System.out.println("9. Go back");
-            Integer choice = new Integer(0);
-            boolean wrongtext = false;
-            do {
-                System.out.println("Introduce the number of the option you would like to choose: ");
-                try {
-                    choice = Integer.parseInt(reader.readLine());
-                    wrongtext = false;
-                } catch (NumberFormatException ex) {
-                    wrongtext = true;
-                    System.out.println("It's not an int, please enter an int");
-                }
-            } while (choice < 1 || choice > 9 || wrongtext);
-            switch (choice) {
-                case 1:
-                    addPatient();
-                    break;
-                case 2:
-                    searchPatientByName();
-                    break;
-                case 3:
-                    searchEMGByPatient();
-                    break;
-
-                case 4:
-                    searchECGByPatient();
-                    break;
-                
-                case 5:
-                    searchFormByName();
-                    break;
-                case 6:
-                    deletePatient();
-                    break;
-                case 7:
-                    String userName = userManager.updateUsername(doctorName);
-                    doctorManager.updateUsername(doctorName, userName);
-                    break;
-                case 8:
-                    userManager.updatePassword(doctorName);
-                    break;
-                case 9:
-                    return;
-
-            }
-        }
-    }
-     */
+   
     public static String changeUsernamePatient(String newName) {
         //si da tiempo comprobar que va bien
         String response = "";
@@ -443,6 +384,18 @@ public class Main {
         List<Ecg> ecgList = ecgManager.getECGpatient(patient_id);
         return ecgList;
     }
+    
+    public static List<Ecg> searchECG(int id) throws Exception {
+ 
+        List<Ecg> ecgList = ecgManager.getECGpatient(id);
+        return ecgList;
+    }
+    public static List<Emg> searchEMG(int id) throws Exception {
+
+        List<Emg> emgList = emgManager.getEMGpatient(id);
+        return emgList;
+    }
+
 
     public static List<Emg> searchEMGByName() throws Exception {
         System.out.println("Searching.... ");
