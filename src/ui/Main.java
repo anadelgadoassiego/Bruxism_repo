@@ -42,9 +42,6 @@ public class Main {
     private static UserManager userManager;
     private static String doctorName = "";
     private static String patientName = "";
-    public static String numbers = "0123456789";
-    public static String caps = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    public static String low_case = "abcdefghijklmnopqrstuvwxyz";
 
     public static void Menu() throws Exception {
 
@@ -265,59 +262,6 @@ public class Main {
 
     }
 
-    private static void addPatient() throws Exception {
-        System.out.println("Please, enter the following information: ");
-        System.out.println("Name: ");
-        String name = reader.readLine();
-        System.out.println("Age: ");
-        Integer age = Integer.parseInt(reader.readLine());
-        System.out.println("Weight: ");
-        Float weight = Float.parseFloat(reader.readLine());
-        System.out.println("Height: ");
-        Float height = Float.parseFloat(reader.readLine());
-        System.out.println("Gender: ");
-        String gender = reader.readLine();
-
-        Patient patient = new Patient(name, age, weight, height, gender);
-
-        String username = "";
-        boolean distinctUser = false;
-        do {
-            System.out.println("Introduce a username for the patient: ");
-            username = reader.readLine();
-            List<String> existUsernames = new ArrayList<String>();
-            existUsernames = patientManager.getUsernames();
-            if (existUsernames.contains(username)) {
-                distinctUser = true;
-            } else {
-                distinctUser = false;
-            }
-        } while (distinctUser);
-
-        String UserName = username;
-        System.out.print("Password: ");
-        String password = getPassword();
-
-        // Create the password's hash
-        MessageDigest md = MessageDigest.getInstance("MD5");
-        md.update(password.getBytes());
-        byte[] hash = md.digest();
-        int roleId = 1;
-        // Get the chosen role from the database
-        Role chosenRole = userManager.getRole(roleId);
-        // Create the user and store it
-        User user = new User(UserName, hash, chosenRole);
-        userManager.createUser(user);
-        patient.setNameuser(UserName);
-        patientManager.add(patient);
-        int patientId = dbManager.getLastId();
-        System.out.println(patientId);
-        int doctorId = doctorManager.getId(doctorName);
-        System.out.println(doctorId);
-        doctorManager.asign(doctorId, patientId);
-
-    }
-
     public static void addEMG_addECG(String response_EMG_ECG, List<Integer> arrayEMG, List<Integer> arrayECG) throws IOException {
 
         Integer patient_id = patientManager.searchByUsername(patientName);
@@ -398,9 +342,7 @@ public class Main {
 
 
     public static List<Emg> searchEMGByName() throws Exception {
-        System.out.println("Searching.... ");
-
-        Integer patient_id = patientManager.searchByUsername(patientName);
+       Integer patient_id = patientManager.searchByUsername(patientName);
         List<Emg> emgList = emgManager.getEMGpatient(patient_id);
         return emgList;
     }
@@ -425,177 +367,6 @@ public class Main {
         return patient;
     }
     
-
-    private static void searchEMGByPatient() throws Exception {
-        searchPatientByName();
-        Integer patient_id = new Integer(0);
-        boolean wrongtext = false;
-        do {
-            System.out.println("Choose an id: ");
-            do {
-                try {
-                    patient_id = Integer.parseInt(reader.readLine());
-                    wrongtext = false;
-                } catch (NumberFormatException ex) {
-                    wrongtext = true;
-                    System.out.println("It's not an int, please enter an int");
-                }
-            } while (wrongtext);
-        } while (emgManager.getEMGpatient(patient_id) == null);
-        List<Emg> emgList = emgManager.getEMGpatient(patient_id);
-        for (Emg emg : emgList) {
-            System.out.println(emg);
-        }
-        System.out.println("1. Search by name of ECG ");
-        System.out.println("2. Finish search ");
-        Integer choice = new Integer(0);
-        wrongtext = false;
-        do {
-            System.out.println("Introduce the number of the option you would like to choose: ");
-            try {
-                choice = Integer.parseInt(reader.readLine());
-                wrongtext = false;
-            } catch (NumberFormatException ex) {
-                wrongtext = true;
-                System.out.println("It's not an int, please enter an int");
-            }
-        } while (choice < 1 || choice > 2 || wrongtext);
-        switch (choice) {
-            case 1:
-                searchEMGByName_patient(emgList);
-                break;
-            case 2:
-                searchPatientByName();
-                break;
-
-        }
-
-    }
-
-    public static void searchEMGByName_patient(List<Emg> emgList) throws Exception {
-        String month;
-        int day;
-        System.out.println("Introduce the month");
-        month = reader.readLine();
-        System.out.println("Introduce day");
-        day = Integer.parseInt(reader.readLine());
-
-        String name_emg = day + month;
-        String name_select;
-        for (Emg emg : emgList) {
-            name_select = emg.getName_emg();
-            if (name_select.contains(name_emg)) {
-                System.out.println(name_select);
-            }
-        }
-
-        System.out.println("Introduce the number of the emg");
-        int position = Integer.parseInt(reader.readLine());
-        name_emg = day + month + "_" + position;
-        for (Emg emg : emgList) {
-            name_select = emg.getName_emg();
-            if (name_select == name_emg) {
-                System.out.println(emg);
-            }
-        }
-
-    }
-
-    private static void searchECGByPatient() throws Exception {
-        searchPatientByName();
-        Integer patient_id = new Integer(0);
-        boolean wrongtext = false;
-        do {
-            System.out.println("Choose an id: ");
-            do {
-                try {
-                    patient_id = Integer.parseInt(reader.readLine());
-                    wrongtext = false;
-                } catch (NumberFormatException ex) {
-                    wrongtext = true;
-                    System.out.println("It's not an int, please enter an int");
-                }
-            } while (wrongtext);
-        } while (ecgManager.getECGpatient(patient_id) == null);
-        List<Ecg> ecgList = ecgManager.getECGpatient(patient_id);
-        for (Ecg ecg : ecgList) {
-            System.out.println(ecg);
-        }
-        System.out.println("1. Search by name of ECG ");
-        System.out.println("2. Finish search ");
-        Integer choice = new Integer(0);
-        wrongtext = false;
-        do {
-            System.out.println("Introduce the number of the option you would like to choose: ");
-            try {
-                choice = Integer.parseInt(reader.readLine());
-                wrongtext = false;
-            } catch (NumberFormatException ex) {
-                wrongtext = true;
-                System.out.println("It's not an int, please enter an int");
-            }
-        } while (choice < 1 || choice > 2 || wrongtext);
-        switch (choice) {
-            case 1:
-                searchECGByName_patient(ecgList);
-                break;
-            case 2:
-                searchPatientByName();
-                break;
-
-        }
-
-    }
-
-    public static void searchECGByName_patient(List<Ecg> ecgList) throws Exception {
-        String month;
-        int day;
-        System.out.println("Introduce the month");
-        month = reader.readLine();
-        System.out.println("Introduce day");
-        day = Integer.parseInt(reader.readLine());
-
-        String name_ecg = day + month;
-        String name_select;
-        for (Ecg ecg : ecgList) {
-            name_select = ecg.getName_ecg();
-            if (name_select.contains(name_ecg)) {
-                System.out.println(name_select);
-            }
-        }
-
-        System.out.println("Introduce the number of the emg");
-        int position = Integer.parseInt(reader.readLine());
-        name_ecg = day + month + "_" + position;
-        for (Ecg ecg : ecgList) {
-            name_select = ecg.getName_ecg();
-            if (name_select == name_ecg) {
-                System.out.println(ecg);
-            }
-        }
-
-    }
-
-    private static void searchFormByName() throws Exception {
-        reader = new BufferedReader(new InputStreamReader(System.in));
-        System.out.println("Please, enter the following information");
-        System.out.println("Enter the name of the patient you want to search: ");
-        String name = reader.readLine();
-        //Ver todos los pacientes que tiene el doctor y si alguno concuerda con el nombre que ha introducido
-        //pues se sigue adelante y si no pues va al else
-        Patient patient = null;
-        //for(Patient patient : )
-
-        if (patient.getFull_name().equalsIgnoreCase(name)) {
-            System.out.println("Enter the desired name of the file (fileName.txt): ");
-            String fileName = reader.readLine();
-            Path path = Paths.get(fileName);
-            Files.write(path, patient.getPatient_form());
-        } else {
-            System.out.println("There is no patient with the name " + name);
-        }
-    }
-
     public static List<Doctor> availableDoctors() throws Exception {
         List<Doctor> doctorList = doctorManager.getDoctors();
         return doctorList;
@@ -606,29 +377,7 @@ public class Main {
         doctorManager.asign(doctor_id, patient_id);
     }
 
-    public static String getPassword(int length) {
-        return getPassword(numbers + caps + low_case, length);
-    }
 
-    public static String getPassword(String key, int length) {
-        String pswd = "";
 
-        for (int i = 0; i < length; i++) {
-            pswd += (key.charAt((int) (Math.random() * key.length())));
-        }
 
-        return pswd;
-    }
-
-    public static String getPassword() {
-        return getPassword(8);
-    }
-
-    private static void releaseResourcesServer(ServerSocket serverSocket) {
-        try {
-            serverSocket.close();
-        } catch (IOException ex) {
-            Logger.getLogger(ServerThreadsClient.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
 }

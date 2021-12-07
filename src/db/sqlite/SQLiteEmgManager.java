@@ -45,31 +45,7 @@ public class SQLiteEmgManager implements EmgManager {
         }
         return emgsList;
     }
-/*
-    @Override
-    public List<Emg> searchByStartDate(Date start_date) {
-        List<Emg> emgsList = new ArrayList<>();
-        try {
-            String sql = "SELECT * FROM emg WHERE sart_date LIKE ?";
-            PreparedStatement prep = c.prepareStatement(sql);
-            prep.setString(1, "%" + start_date + "%");
-            ResultSet rs = prep.executeQuery();
-            while (rs.next()) {
-                int id = rs.getInt("id");
-                String emgName = rs.getString("name_emg");
-                Date emgStart_date = rs.getDate("start_date");
-                Date emgFinish_date = rs.getDate("finish_date");
 
-                Emg newemg = new Emg(id, emgName, emgStart_date,
-                        emgFinish_date);
-                emgsList.add(newemg);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return emgsList;
-    }
-*/
     @Override
     public void add(Emg emg) {
         try {

@@ -44,31 +44,7 @@ public class SQLiteEcgManager implements EcgManager {
         }
         return ecgsList;
     }
-/*
-    @Override
-    public List<Ecg> searchByStartDate(Date start_date) {
-        List<Ecg> ecgsList = new ArrayList<>();
-        try {
-            String sql = "SELECT * FROM ecg WHERE sart_date LIKE ?";
-            PreparedStatement prep = c.prepareStatement(sql);
-            prep.setString(1, "%" + start_date + "%");
-            ResultSet rs = prep.executeQuery();
-            while (rs.next()) {
-                int id = rs.getInt("id");
-                String ecgName = rs.getString("name_ecg");
-                Date ecgStart_date = rs.getDate("start_date");
-                Date ecgFinish_date = rs.getDate("finish_date");
 
-                Ecg newecg = new Ecg(id, ecgName, ecgStart_date,
-                        ecgFinish_date);
-                ecgsList.add(newecg);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return ecgsList;
-    }
-*/
     @Override
     public void add(Ecg ecg) {
         try {
