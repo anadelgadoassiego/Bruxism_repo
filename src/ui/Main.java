@@ -302,12 +302,9 @@ public class Main {
         }
         String filePath = nameForm_ecg_emg;
         byte[] patient_form_ecg_emg = Files.readAllBytes(Paths.get(filePath));
-        Emg emg = new Emg();
-        Ecg ecg = new Ecg();
-        emg.setForm(patient_form_ecg_emg);
-        ecg.setForm(patient_form_ecg_emg);
-        emgManager.addForm(emg);
-        ecgManager.addForm(ecg);
+        
+        
+        
         
         String name_emg = ("EMG_") + response_EMG_ECG + (".txt");
         String name_ecg = ("ECG_") + response_EMG_ECG + (".txt");
@@ -354,12 +351,17 @@ public class Main {
         byte[] patient_emg = Files.readAllBytes(Paths.get(filePath_emg));
         byte[] patient_ecg = Files.readAllBytes(Paths.get(filePath_ecg));
 
-        Emg emg2 = new Emg(name_emg, patient_id, patient_emg);
-        Ecg ecg2 = new Ecg(name_ecg, patient_id, patient_ecg);
+        Emg emg2 = new Emg(name_emg, patient_id, patient_emg, patient_form_ecg_emg);
+        Ecg ecg2 = new Ecg(name_ecg, patient_id, patient_ecg, patient_form_ecg_emg);
 
         //System.out.println("probando: "+patient_emg);
         emgManager.add(emg2);
         ecgManager.add(ecg2);
+        
+        /*emg2.setForm(patient_form_ecg_emg);
+        ecg2.setForm(patient_form_ecg_emg);
+        emgManager.addForm(emg2);
+        ecgManager.addForm(ecg2);*/
     }
 
     public static List<Ecg> searchECGByName() throws Exception {

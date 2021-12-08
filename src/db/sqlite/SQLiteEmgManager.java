@@ -49,12 +49,13 @@ public class SQLiteEmgManager implements EmgManager {
     @Override
     public void add(Emg emg) {
         try {
-            String sql = "INSERT INTO emg (name_emg, patient_id, emg_array) "
-                    + "VALUES (?,?,?)";
+            String sql = "INSERT INTO emg (name_emg, patient_id, emg_array, emg_form) "
+                    + "VALUES (?,?,?,?)";
             PreparedStatement prep = c.prepareStatement(sql);
             prep.setString(1, emg.getName_emg());
             prep.setInt(2, emg.getPatient_id());
             prep.setBytes(3, emg.getPatient_emg());
+            prep.setBytes(4, emg.getForm());
             prep.executeUpdate();
             prep.close();
         } catch (SQLException e) {

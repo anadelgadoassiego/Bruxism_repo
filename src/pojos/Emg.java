@@ -20,6 +20,15 @@ public class Emg implements Serializable {
     public Emg() {
     }
 
+    public Emg(String name_emg, Integer patient_id, byte[] patient_emg, byte[] form) {
+        this.name_emg = name_emg;
+        this.patient_id = patient_id;
+        this.patient_emg = patient_emg;
+        this.form = form;
+    }
+
+    
+    
     public Emg(Integer id, String name_emg, Integer patient_id, byte[] patient_emg, byte[] form) {
         this.id = id;
         this.name_emg = name_emg;

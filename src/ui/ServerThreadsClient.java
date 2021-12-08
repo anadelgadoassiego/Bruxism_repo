@@ -48,7 +48,6 @@ public class ServerThreadsClient implements Runnable {
             don = new DataOutputStream(outputStream);
             while(true){
                 int choice= din.readInt();
-                System.out.println(choice);
                 switch (choice) {
                     case 1:
                        int roleId = din.readInt();
@@ -70,7 +69,6 @@ public class ServerThreadsClient implements Runnable {
                         break;
                     case 2:
                         String response_login = din.readUTF();
-                        System.out.println(response_login);
                         String okay = "";
                         try {
                             okay = ui.Main.login(response_login);
@@ -230,7 +228,6 @@ public class ServerThreadsClient implements Runnable {
             objectOutputStream3 = new ObjectOutputStream(outputStream3);
             while(true) {
                 int choice= din3.readInt();
-                System.out.println(choice);
                 switch (choice) {
                     case 1:
                         
