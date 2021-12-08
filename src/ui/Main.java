@@ -155,8 +155,12 @@ public class Main {
     public static String changeUsernamePatient(String newName) {
         //si da tiempo comprobar que va bien
         String response = "";
+        System.out.println(newName);
+        System.out.println(patientName);
+
         userManager.updateUsername(patientName, newName);
         patientManager.updateUsername(patientName, newName);
+        patientName = newName;
         response = "Action Completed";
         return response;
     }
@@ -166,6 +170,7 @@ public class Main {
         String response = "";
         userManager.updateUsername(doctorName, newName);
         doctorManager.updateUsername(doctorName, newName);
+        doctorName= newName;
         response = "Action Completed";
         return response;
     }

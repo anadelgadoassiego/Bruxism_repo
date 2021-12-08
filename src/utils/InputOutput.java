@@ -32,4 +32,22 @@ public class InputOutput {
         }
 
     }
+    public static String getStringFromKeyboard(String question) {
+        BufferedReader consola = new BufferedReader(new InputStreamReader(System.in));
+        while (true) {
+            try {
+                
+                System.out.println(question);
+                String stringLeida = consola.readLine();
+                
+                while(stringLeida.equals("")||stringLeida.equals("\n")){
+                stringLeida = consola.readLine();
+                }
+                return stringLeida;
+            } catch (IOException ioe) {
+                System.out.println("There was a problem while reading, please enter it again.");
+            }
+
+        }
+    }
 }

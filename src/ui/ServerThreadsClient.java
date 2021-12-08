@@ -178,6 +178,7 @@ public class ServerThreadsClient implements Runnable {
                         String newName = din2.readUTF();
                         try {
                             okay = ui.Main.changeUsernamePatient(newName);
+                            System.out.println(okay);
                             don2.writeUTF(okay);
                         } catch (Exception ex) {
                             Logger.getLogger(ServerThreadsClient.class.getName()).log(Level.SEVERE, null, ex);
