@@ -24,23 +24,22 @@ public class ServerReceiveCharactersViaNetwork {
     public static void main(String args[]) throws IOException {
         ServerSocket serverSocket = new ServerSocket(9000);
         
-       // new Thread((Runnable) new releaseBoss(serverSocket)).start();
+        new Thread((Runnable) new releaseBoss(serverSocket)).start();
         try {
             while (true) {
                 executeMenu();
                 //This executes when we have a client
-             //   if(!desconexion ){
+        
                 Socket socket = serverSocket.accept();
                 
-                //number_users_conected++;
+                number_users_conected++;
                 new Thread(new ServerThreadsClient(socket)).start();
                
-                //aqui abririamos ventana
-                //System.out.println("¿Do you want to disconect the server?");
-             //   }
                 
             }
-        } finally {
+        }catch(IOException ex){
+            System.out.println("¡Goodbye! Server and database dssconnected");
+        }finally {
             releaseResourcesServer(serverSocket);
         }
     }

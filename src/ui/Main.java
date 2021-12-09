@@ -174,7 +174,26 @@ public class Main {
         response = "Action Completed";
         return response;
     }
-
+        public static String BossUser(String username,String password){
+        User user = userManager.checkPassword(username, password);
+        String okay="";
+        if (user == null) {
+            okay = "Wrong credentials, please try again!";
+        } // We check the role
+        else if (user.getRole().getRole().equalsIgnoreCase("doctor")) {
+            okay = "Welcome doctor !";
+            doctorName = username;
+            //doctorMenu();
+            // We check the role
+        } else if (user.getRole().getRole().equalsIgnoreCase("patient")) {
+            okay = "Welcome patient !";
+            patientName = username;
+            //patientMenu();
+        } else {
+            okay = "Invalid role";
+        }
+        return okay;
+    }
     public static void GoodBye() {
         dbManager.disconnect();
         userManager.disconnect();

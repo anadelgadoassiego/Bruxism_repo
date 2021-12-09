@@ -20,6 +20,7 @@ import pojos.Doctor;
 import pojos.Ecg;
 import pojos.Emg;
 import pojos.Patient;
+import static ui.ServerReceiveCharactersViaNetwork.number_users_conected;
 
 public class ServerThreadsClient implements Runnable {
 
@@ -88,7 +89,7 @@ public class ServerThreadsClient implements Runnable {
                         }
                         break;
                     case 0:
-                        ui.Main.GoodBye();
+                        number_users_conected--;
                         return;
                     default:
                         break;
