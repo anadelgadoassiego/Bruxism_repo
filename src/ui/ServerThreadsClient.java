@@ -156,7 +156,7 @@ public class ServerThreadsClient implements Runnable {
                             //System.out.println("He llegado ECG: "+ECG_value);
                             arrayECG.add(ECG_value);
                         }
-                        
+                        System.out.println("response: "+response_form_ecg_emg);
                         ui.Main.addEMG_addECG(response_EMG_ECG,arrayEMG,arrayECG,response_form_ecg_emg);
                         break;
                     case 3:

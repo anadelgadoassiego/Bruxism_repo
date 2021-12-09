@@ -1,0 +1,6 @@
+1. Level of laboral concerns: 1
+2. Level of personal concerns: 1
+3. Have you been stress today?: 1
+4. Do you feel tired?: 1
+5. Have you noticed that you grind/clench your teeth during the day?: 1
+6. Additional important information you want to share: no
