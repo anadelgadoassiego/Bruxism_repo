@@ -9,8 +9,9 @@ import static utils.InputOutput.getStringFromKeyboard;
 
 
 public class ServerReceiveCharactersViaNetwork {
-    static int number_users_conected=0;
-    static boolean desconexion=false;
+    public static int number_users_conected=0;
+    public static boolean desconexion=false;
+    public static ServerSocket serverSocket;
      public static void executeMenu(){ 
         new Main();
         try {
@@ -22,7 +23,7 @@ public class ServerReceiveCharactersViaNetwork {
     }
 
     public static void main(String args[]) throws IOException {
-        ServerSocket serverSocket = new ServerSocket(9000);
+        serverSocket = new ServerSocket(9000);
         
         new Thread((Runnable) new releaseBoss(serverSocket)).start();
         try {
@@ -38,9 +39,12 @@ public class ServerReceiveCharactersViaNetwork {
                 
             }
         }catch(IOException ex){
-            System.out.println("¡Goodbye! Server and database dssconnected");
+            System.out.println("¡Goodbye! Server and database disconnected");
         }finally {
+            
             releaseResourcesServer(serverSocket);
+            
+            
         }
     }
    

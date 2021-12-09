@@ -24,7 +24,7 @@ public class releaseBoss implements Runnable  {
     }
  
     public void run() {
-     String answer = getStringFromKeyboard("¿Do you want to disconect the server?(yes/no)");
+    /* String answer = getStringFromKeyboard("¿Do you want to disconect the server?(yes/no)");
                 if(answer.equals("yes")){
                     
                     if(number_users_conected==0){
@@ -44,10 +44,11 @@ public class releaseBoss implements Runnable  {
                     }
                 }else{
                     
-                }
+                }*/
+    ui.clouse.main();
     }
     
-    private static void releaseResourcesServer(ServerSocket serverSocket) {
+    public static void releaseResourcesServer(ServerSocket serverSocket) {
         try {
             serverSocket.close();
         } catch (IOException ex) {
