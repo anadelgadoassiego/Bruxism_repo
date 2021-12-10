@@ -42,7 +42,7 @@ public class clouse extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setText("Press ok! to desconnect the database");
+        jLabel1.setText("Press ok! to disconnect the database");
 
         jButton1.setText("ok!");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -63,7 +63,7 @@ public class clouse extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(178, 178, 178)
                         .addComponent(jButton1)))
-                .addContainerGap(121, Short.MAX_VALUE))
+                .addContainerGap(125, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
