@@ -302,7 +302,7 @@ public class Main {
         Patient patient = patientManager.getPatient(patient_id);
 
         String namePatient = patient.getFull_name();
-        String nameForm_ecg_emg = patientName + "_" + q7 + "_form_ECG_EMG.txt";
+        String nameForm_ecg_emg = patientName+ "_form_ECG_EMG.txt";
         
         File file = new File(nameForm_ecg_emg);
         PrintWriter printWriter = null;
