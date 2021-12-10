@@ -278,7 +278,6 @@ public class Main {
         }
         String filePath = nameForm;
         byte[] patient_form = Files.readAllBytes(Paths.get(filePath));
-        System.out.println(patient_form);
         patient.setPatient_form(patient_form);
         patientManager.addForm(patient);
         responseServer = "Form saved successfully";
@@ -344,7 +343,6 @@ public class Main {
                 printWriter2.print(arrayEMG.get(i) + "\n");
             }
         } catch (IOException ex) {
-            //responseServer = "There was an error while saving";
 
         } finally {
             if (printWriter2 != null) {
@@ -361,7 +359,6 @@ public class Main {
                 printWriter3.print(arrayECG.get(i) + "\n");
             }
         } catch (IOException ex) {
-            //responseServer = "There was an error while saving";
 
         } finally {
             if (printWriter3 != null) {
@@ -378,14 +375,10 @@ public class Main {
         Emg emg2 = new Emg(name_emg, patient_id, patient_emg, patient_form_ecg_emg);
         Ecg ecg2 = new Ecg(name_ecg, patient_id, patient_ecg, patient_form_ecg_emg);
 
-        //System.out.println("probando: "+patient_emg);
         emgManager.add(emg2);
         ecgManager.add(ecg2);
         
-        /*emg2.setForm(patient_form_ecg_emg);
-        ecg2.setForm(patient_form_ecg_emg);
-        emgManager.addForm(emg2);
-        ecgManager.addForm(ecg2);*/
+        
     }
 
     public static List<Ecg> searchECGByName() throws Exception {

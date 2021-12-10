@@ -97,6 +97,7 @@ public class ServerThreadsClient implements Runnable {
             }
             
         } catch (IOException ex) {
+            number_users_conected--;
             Logger.getLogger(ServerThreadsClient.class.getName()).log(Level.SEVERE, null, ex);
         } catch (Exception ex) {
             Logger.getLogger(ServerThreadsClient.class.getName()).log(Level.SEVERE, null, ex);
@@ -119,7 +120,6 @@ public class ServerThreadsClient implements Runnable {
             objectOutputStream = new ObjectOutputStream(outputStream2);
             while(true) {
                 int choice= din2.readInt();
-                System.out.println(choice);
                 switch (choice) {
                     case 1:
                        String response_form = din2.readUTF();
@@ -156,7 +156,7 @@ public class ServerThreadsClient implements Runnable {
                             //System.out.println("He llegado ECG: "+ECG_value);
                             arrayECG.add(ECG_value);
                         }
-                        System.out.println("response: "+response_form_ecg_emg);
+                        
                         ui.Main.addEMG_addECG(response_EMG_ECG,arrayEMG,arrayECG,response_form_ecg_emg);
                         break;
                     case 3:
@@ -179,7 +179,6 @@ public class ServerThreadsClient implements Runnable {
                         String newName = din2.readUTF();
                         try {
                             okay = ui.Main.changeUsernamePatient(newName);
-                            System.out.println(okay);
                             don2.writeUTF(okay);
                         } catch (Exception ex) {
                             Logger.getLogger(ServerThreadsClient.class.getName()).log(Level.SEVERE, null, ex);
@@ -212,6 +211,7 @@ public class ServerThreadsClient implements Runnable {
                 }
             }
         } catch (IOException ex) {
+            number_users_conected--;
             Logger.getLogger(ServerThreadsClient.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -322,6 +322,7 @@ public class ServerThreadsClient implements Runnable {
                 }
             }
         } catch (IOException ex) {
+            number_users_conected--;
             Logger.getLogger(ServerThreadsClient.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
