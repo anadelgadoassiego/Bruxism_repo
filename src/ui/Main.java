@@ -59,7 +59,7 @@ public class Main {
         //To initialize the bufferedReader
         reader = new BufferedReader(new InputStreamReader(System.in));
         System.out.println("Welcome to our database!");
-        newRole();
+        //newRole(); this only executes one time (not error, but to obtain clear table in database)
 
     }
 
